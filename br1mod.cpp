@@ -83,16 +83,20 @@
 #define ACTION_CH_H     0x162   // Challenge Combat: Hard
 #define ACTION_CH_E     0x163   // Challenge Combat: Extreme
 #define ACTION_CH_B     0x164   // Boss Battle
+#define ACTION_BOSSSEL  0x165   // boss-appearance cycler
+#define ACTION_MONSTER  0x166   // Monster Mash arena
 
 #define INI_FILE       ".\\br1mod.ini"
 #define MSN_CHALLENGE  "challenge.msn"
 #define MSN_BOSSBATTLE "bossbattle.msn"
+#define MSN_MONSTER    "monster.msn"
 
 // ----------------------------- state --------------------------------------
 static DWORD g_exeBase = 0;
 static int   g_powers = 0;
 static char  g_label[160];
-static char  g_labelS[4][160];
+static char  g_labelS[5][160];
+static char  g_labelB[160];
 static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-level
 static int   g_diff = 0;       // 0 Normal, 1 Hard, 2 Extreme
 static int   g_mode = 0;       // 0 Challenge Combat, 1 Boss Battle
@@ -141,7 +145,7 @@ static const char* LABEL_POWERS[6] = {
     "\x82\xB7\x82\xD7\x82\xC4\x82\xCC\x83\x70\x83\x8F\x81\x5B\x82\xC6\x83\x52\x83\x93\x83\x7B", // JA "すべてのパワーとコンボ"
 };
 
-static const char* LABEL_CH[4][6] = {
+static const char* LABEL_CH[5][6] = {
     { "Challenge Combat: Normal", "Desaf\xEDo: Normal", "Challenge Combat: Normal",
       "Challenge Combat: Normal", "Challenge Combat: Normal", "Challenge Combat: Normal" },
     { "Challenge Combat: Hard", "Desaf\xEDo: Dif\xED""cil", "Challenge Combat: Hard",
@@ -150,6 +154,18 @@ static const char* LABEL_CH[4][6] = {
       "Challenge Combat: Extreme", "Challenge Combat: Extreme", "Challenge Combat: Extreme" },
     { "Boss Battle", "Batalla con el jefe", "Boss Battle",
       "Boss Battle", "Boss Battle", "Boss Battle" },
+    { "Monster Mash", "Mar de monstruos", "Monster Mash",
+      "Monster Mash", "Monster Mash", "Monster Mash" },
+};
+
+static const char* LABEL_BSEL[6] = {
+    "Boss", "Jefe", "Boss", "Boss", "Boss", "Boss",
+};
+
+// Boss Battle appearance cycler: "" = native NAZI_BARROCK.
+static const char* BOSS_OPTS[] = {
+    "", "Mynce", "Butcheress", "Rayne", "RayneLA",
+    "NAZI_BARROCK.DFM", "BUTCHERESS.DFM", NULL
 };
 
 static const char* ModLocalize(const char* key) {
@@ -171,12 +187,37 @@ static void ComposeLabelS(int d) {
     const char* lbl = ModLocalize(LABEL_CH[d][g_lang]);
     // One shared best time per mode — shown on every row of that mode.
     DWORD best = GetPrivateProfileIntA("Challenge",
-                                       d == 3 ? "BestBoss" : "BestTime",
+                                       d == 3 ? "BestBoss" : d == 4 ? "BestMonster" : "BestTime",
                                        0, INI_FILE);
     if (best)
         sprintf(g_labelS[d], "%s - %u:%02u", lbl, best / 60000, (best / 1000) % 60);
     else
         sprintf(g_labelS[d], "%s", lbl);
+}
+
+// Boss-appearance cycler row: shows current [Appearance] Boss value.
+static void ComposeLabelB() {
+    if (!g_langDetected) DetectLang();
+    char cur[64] = "";
+    GetPrivateProfileStringA("Appearance", "Boss", "", cur, sizeof(cur), INI_FILE);
+    const char* name = cur[0] ? cur : "Barrock";
+    // strip .DFM for display
+    char disp[64]; strcpy(disp, name);
+    char* d = strstr(disp, ".DFM"); if (d) *d = 0;
+    sprintf(g_labelB, "%s: %s", ModLocalize(LABEL_BSEL[g_lang]), disp);
+}
+
+static void CycleBoss() {
+    char cur[64] = "";
+    GetPrivateProfileStringA("Appearance", "Boss", "", cur, sizeof(cur), INI_FILE);
+    int idx = 0;
+    for (int i = 0; BOSS_OPTS[i]; i++)
+        if (!stricmp(BOSS_OPTS[i], cur)) { idx = i; break; }
+    idx++; if (!BOSS_OPTS[idx]) idx = 0;
+    if (BOSS_OPTS[idx][0])
+        WritePrivateProfileStringA("Appearance", "Boss", BOSS_OPTS[idx], INI_FILE);
+    else
+        WritePrivateProfileStringA("Appearance", "Boss", NULL, INI_FILE);
 }
 
 // -------------------------- appearance swap --------------------------------
@@ -477,6 +518,10 @@ static void StartChallenge(int d) {
         strcpy((char*)g_missionName, MSN_BOSSBATTLE);
         g_mode = 1;
         g_diff = 0;
+    } else if (d == 4) {
+        strcpy((char*)g_missionName, MSN_MONSTER);
+        g_mode = 2;
+        g_diff = 0;
     } else {
         strcpy((char*)g_missionName, MSN_CHALLENGE);
         g_mode = 0;
@@ -620,7 +665,7 @@ static void MboxSet(BYTE* e, char* orig, char* cmd) {
 
 // Wave campaign per mode/difficulty. Time runs from the first spawn until
 // the last wave is cleared; one best time is kept per mode in the ini.
-static const int CH_WAVES[2][3] = { { 8, 10, 10 }, { 6, 6, 6 } };
+static const int CH_WAVES[3][3] = { { 8, 10, 10 }, { 6, 6, 6 }, { 6, 6, 6 } };
 #define NWAVES() CH_WAVES[g_mode][g_diff]
 
 // Boss Battle (mode 1) fixed 6-wave gauntlet — officers, then sub-officers
@@ -629,12 +674,12 @@ static const int B_SZ[6] = { 4, 5, 5, 6, 6, 2 };
 static const int B_EL[6] = { 0, 0, 1, 2, 3, 2 };
 
 static int WaveSize(int w) {   // w is 1-based
-    if (g_mode == 1) return B_SZ[min(w, 6) - 1];
+    if (g_mode >= 1) return B_SZ[min(w, 6) - 1];
     if (g_diff == 2) return 11;              // Extreme: brute squads
     return min(3 + w + g_diff, 8 + 2 * g_diff);
 }
 static int WaveElites(int w) {
-    if (g_mode == 1) return B_EL[min(w, 6) - 1];
+    if (g_mode >= 1) return B_EL[min(w, 6) - 1];
     if (g_diff == 0) return 0;               // Normal: plain soldiers only
     if (g_diff == 2) return 3;               // Extreme: elites every wave
     return (w % 3 == 0) ? (w >= 9 ? 2 : 1) : 0;  // Hard: waves 3,6,9
@@ -733,7 +778,7 @@ static void QueueWave(int w) {
     char n[24];
     g_nSpawned = 0;
     int cnt = WaveSize(w), eli = WaveElites(w);
-    int nelites = (g_mode == 1) ? N_ELITES_BOSS : N_ELITES;
+    int nelites = (g_mode >= 1) ? N_ELITES_BOSS : N_ELITES;
     for (int i = 0; i < cnt; ++i) {
         sprintf(n, "SoldierS%d", (g_soldierRot++ % N_SOLDIERS) + 1);
         QueueSpawn(n);
@@ -743,7 +788,7 @@ static void QueueWave(int w) {
         QueueSpawn(n);
     }
     // Boss Battle finale: the boss drops in on the last wave.
-    if (g_mode == 1 && w == NWAVES()) QueueSpawn("Boss1");
+    if (g_mode >= 1 && w == NWAVES()) QueueSpawn("Boss1");
     DiTrace("CHAL wave %d/%d queued (%d+%d actors, diff=%d mode=%d)\n",
             w, NWAVES(), cnt, eli, g_diff, g_mode);
 }
@@ -772,7 +817,7 @@ static void ShowHud(const char* text) {
 // Persist the finish time if it beats the stored record. One record per
 // mode — difficulty is a selection, not a separate challenge.
 static void RecordTime(DWORD ms) {
-    const char* key = g_mode == 1 ? "BestBoss" : "BestTime";
+    const char* key = g_mode == 1 ? "BestBoss" : g_mode == 2 ? "BestMonster" : "BestTime";
     DWORD best = GetPrivateProfileIntA("Challenge", key, 0, INI_FILE);
     if (!best || ms < best) {
         char b[16]; sprintf(b, "%u", ms);
@@ -794,7 +839,7 @@ static void RecordTime(DWORD ms) {
 static void WaveTick() {
     // Mission buffer must still match the armed arena — cancels if the
     // player left for another mission/menu.
-    const char* want = g_mode == 1 ? MSN_BOSSBATTLE : MSN_CHALLENGE;
+    const char* want = g_mode == 1 ? MSN_BOSSBATTLE : g_mode == 2 ? MSN_MONSTER : MSN_CHALLENGE;
     if (_strnicmp((char*)g_missionName, want, strlen(want))) {
         g_challenge = 0;
         g_qHead = g_qTail = 0;
@@ -1114,6 +1159,20 @@ static void __declspec(naked) HookMenuInj() {
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
+        call ComposeLabelB
+        mov ecx, offset g_labelB
+        mov eax, ACTION_BOSSSEL
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
+        push 4
+        call ComposeLabelS
+        add esp, 4
+        mov ecx, offset g_labelS + 640
+        mov eax, ACTION_MONSTER
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
         popad
         push edx
         mov edx, g_progByte
@@ -1161,8 +1220,22 @@ static void __declspec(naked) HookDispatch() {
         ret
     tryboss:
         cmp edi, ACTION_CH_B
-        jne back
+        jne trysel
         push 3
+        call StartChallenge
+        add esp, 4
+        push g_retMissionGo
+        ret
+    trysel:
+        cmp edi, ACTION_BOSSSEL
+        jne trymon
+        call CycleBoss
+        push g_retHandled
+        ret
+    trymon:
+        cmp edi, ACTION_MONSTER
+        jne back
+        push 4
         call StartChallenge
         add esp, 4
         push g_retMissionGo
