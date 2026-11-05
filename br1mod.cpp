@@ -1012,14 +1012,37 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     }
 
     // --- challenge: arm on the first real-run slot-0 after the menu pick ---
-    if (g_challenge == 1 && idx == 0 && mode == 0 && !again) {
-        g_challenge = 2;
-        g_wstate = 0;
-        DoneAdd(entry, t);                    // powers come via the queue here
-        if (g_powers)
-            for (int i = 0; i < N_INJ; ++i) QPush(g_inj[i]);
-        DiTrace("CHAL armed mode=%d diff=%d entry=%p first=[%s]\n",
-                g_mode, g_diff, entry, t);
+    // Also re-arm whenever an armed arena's mission reloads — "Continuar"
+    // after completion or death restarts the same MSN (slot 0 sits
+    // outside the generated script's mainloop, so it only fires once per
+    // load; actors come back dormant) — that turns Continue into "play it
+    // again". If the slot-0 belongs to a different mission instead
+    // (player went back to the menu and started a campaign act), drop
+    // the stale challenge state.
+    if (idx == 0 && mode == 0 && !again) {
+        if (g_challenge) {
+            const char* want = g_mode == 2 ? MSN_MONSTER
+                             : g_mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE;
+            if (_strnicmp((char*)g_missionName, want, strlen(want))) {
+                g_challenge = 0;
+            } else {
+                int rearm = (g_challenge == 2);
+                g_challenge = 2;
+                g_wstate = 0;
+                // Script-entry tables are keyed by address — a reloaded
+                // script gets fresh entries, so stale rows only waste slots.
+                memset(g_done, 0, sizeof(g_done));
+                for (int i = 0; i < 16; ++i) g_saved[i].entry = NULL;
+                for (int i = 0; i < 12; ++i) g_mbox[i].entry = NULL;
+                g_qHead = g_qTail = 0;
+                DoneAdd(entry, t);            // powers come via the queue here
+                if (g_powers)
+                    for (int i = 0; i < N_INJ; ++i) QPush(g_inj[i]);
+                DiTrace("CHAL %s mode=%d diff=%d entry=%p first=[%s]\n",
+                        rearm ? "rearmed" : "armed",
+                        g_mode, g_diff, entry, t);
+            }
+        }
     }
 
     // --- challenge: native cinematics/plot/spawns become plain yields ---
