@@ -112,6 +112,7 @@ static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-lev
 static int   g_diff = 0;       // 0 Normal, 1 Hard, 2 Extreme
 static int   g_mode = 0;       // 0 Challenge, 2 Monster Mash, 3 Boss Rush
 static void  DiTrace(const char* fmt, ...);
+static void  ErrTrace(const char* fmt, ...);
 static int   g_autokill = 0;   // ini [Challenge] Autokill — test-only wave bleed
 
 // Rebased values the naked hooks read as memory operands.
@@ -327,7 +328,7 @@ static void ApplyAppearance() {
                     : g_mode == 3 ? "world\\bossrush.msn"
                                   : "world\\challenge.msn";
     FILE* f = fopen(msn, "rb");
-    if (!f) { DiTrace("APPEAR open fail %s\n", msn); return; }
+    if (!f) { ErrTrace("APPEAR open fail %s\n", msn); return; }
     fseek(f, 0, SEEK_END); long sz = ftell(f); fseek(f, 0, SEEK_SET);
     char* txt = (char*)malloc(sz + 0x8000);
     if (fread(txt, 1, sz, f) != (size_t)sz) { fclose(f); free(txt); return; }
@@ -380,7 +381,19 @@ static void TogglePowers() {
     WritePrivateProfileStringA("Powers", "all", g_powers ? "1" : "0", INI_FILE);
 }
 
+static int   g_trace = -1;            // [Debug] Trace=1, lazy-init
 static void DiTrace(const char* fmt, ...) {
+    if (g_trace < 0) g_trace = GetPrivateProfileIntA("Debug", "Trace", 0, INI_FILE);
+    if (!g_trace) return;
+    FILE* f = fopen("br1mod_trace.log", "a");
+    if (!f) return;
+    va_list ap; va_start(ap, fmt);
+    vfprintf(f, fmt, ap);
+    va_end(ap); fclose(f);
+}
+
+// Real error conditions always log (silent mod failures are undebuggable).
+static void ErrTrace(const char* fmt, ...) {
     FILE* f = fopen("br1mod_trace.log", "a");
     if (!f) return;
     va_list ap; va_start(ap, fmt);
@@ -573,7 +586,7 @@ static int RecordAlive(DWORD a) {
                 call fn
                 mov r, eax }
     } __except (EXCEPTION_EXECUTE_HANDLER) {
-        if (g_dbgAlive++ < 8) DiTrace("CHAL death-state read fault rec=%08X\n", a);
+        if (g_dbgAlive++ < 8) ErrTrace("CHAL death-state read fault rec=%08X\n", a);
         return 1;  // an unreadable actor must not falsely clear a wave
     }
     return r == 0;
@@ -656,7 +669,7 @@ static void RespawnReusedActor(const char* name) {
             rec = next;
         }
     } __except (EXCEPTION_EXECUTE_HANDLER) {
-        DiTrace("CHAL respawn fault %s\n", name);
+        ErrTrace("CHAL respawn fault %s\n", name);
     }
 }
 
@@ -909,7 +922,7 @@ static void WaveTick() {
             if (now - g_stateSince < SPAWN_TIMEOUT_MS) return;
             // A spawn failure is not a victory; do not skip waves or save
             // a bogus best time after the former 3600-script-tick wait.
-            DiTrace("CHAL wave %d spawn failed t=%u\n", g_wave, now);
+            ErrTrace("CHAL wave %d spawn failed t=%u\n", g_wave, now);
             ShowHud("ERROR: NO APARECEN ENEMIGOS");
             g_wstate = 4;
             return;
@@ -1537,12 +1550,12 @@ static LONG CALLBACK CrashLog(EXCEPTION_POINTERS* ep) {
 // refuses to touch the site if the exe differs from what we analyzed.
 static int PatchChecked(DWORD site, const char* expected, int siteLen, void* target) {
     if (memcmp((void*)site, expected, siteLen)) {
-        DiTrace("PATCH-SKIP %08X (bytes differ)\n", site);
+        ErrTrace("PATCH-SKIP %08X (bytes differ)\n", site);
         return 0;
     }
     DWORD old;
     if (!VirtualProtect((void*)site, siteLen, PAGE_EXECUTE_READWRITE, &old)) {
-        DiTrace("PATCH-FAIL %08X vp\n", site);
+        ErrTrace("PATCH-FAIL %08X vp\n", site);
         return 0;
     }
     BYTE* p = (BYTE*)site;
