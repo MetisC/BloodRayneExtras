@@ -212,7 +212,7 @@ static void ComposeLabelS(int d) {
         sprintf(g_labelS[d], d == 5 ? "%s - %u" : "%s - %u:%02u",
                 lbl, d == 5 ? best : best / 60000, (best / 1000) % 60);
     else
-        sprintf(g_labelS[d], "%s", lbl);
+        sprintf(g_labelS[d], "%s - --", lbl);
 }
 
 // Player-skin cycler row: shows/cycles [Appearance] Skin (hero model).
