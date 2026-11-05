@@ -171,7 +171,7 @@ int main() {
 
     const int modes[] = { 0, 0, 0, 2, 3, 0 };
     const int diffs[] = { 0, 1, 2, 0, 0, 3 };
-    const char* keys[] = { "BestTime", "BestTime", "BestTime",
+    const char* keys[] = { "BestNormal", "BestHard", "BestExtreme",
                            "BestMonster", "BestRush", "BestWaves" };
     for (int run = 0; run < 6; ++run) {
         Reset(modes[run], diffs[run]); WaveTick();

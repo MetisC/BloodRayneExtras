@@ -126,6 +126,7 @@ static int   g_replay;
 
 typedef const char* (__cdecl *Localize_t)(const char*);
 static const char* Localize(const char* key) {
+    if (!g_fnLocalize) return key;   // before Worker init (and test builds)
     return ((Localize_t)g_fnLocalize)(key);
 }
 
@@ -186,6 +187,21 @@ static const char* LABEL_SKIN[6] = {
     "Aspetto", "Appearance", "Appearance",
 };
 
+// HUD strings for the wave engine (same L_* order).
+static const char* HUD_WAVE[6] = {
+    "WAVE", "OLEADA", "VAGUE", "ONDATA",
+    "\xC2\xCE\xCB\xCD\xC0",                 // RU "ВОЛНА"
+    "WAVE",                                 // JA: EN romaji is idiomatic
+};
+static const char* HUD_DONE[6] = {
+    "COMPLETED!", "COMPLETADO!", "TERMIN\xC9!", "COMPLETATO!",
+    "\xC3\xCE\xD2\xCE\xC2\xCE!",            // RU "ГОТОВО!"
+    "CLEAR!",                               // JA
+};
+
+// One record per difficulty — each row is a separate challenge.
+static const char* DIFF_KEYS[3] = { "BestNormal", "BestHard", "BestExtreme" };
+
 static const char* ModLocalize(const char* key) {
     const char* t = Localize(key);
     if (t && t != key) return t;
@@ -203,10 +219,10 @@ static void ComposeLabel() {
 static void ComposeLabelS(int d) {
     if (!g_langDetected) DetectLang();
     const char* lbl = ModLocalize(LABEL_CH[d][g_lang]);
-    // One shared best time per mode — shown on every row of that mode.
+    // One record per row — difficulty rows have their own keys.
     DWORD best = GetPrivateProfileIntA("Challenge",
-                                       d == 3 ? "BestMonster" : d == 4 ? "BestRush"
-                                            : d == 5 ? "BestWaves" : "BestTime",
+                                       d < 3 ? DIFF_KEYS[d] : d == 3 ? "BestMonster"
+                                             : d == 4 ? "BestRush" : "BestWaves",
                                        0, INI_FILE);
     if (best)
         sprintf(g_labelS[d], d == 5 ? "%s - %u" : "%s - %u:%02u",
@@ -750,11 +766,13 @@ static void ShowHud(const char* text, float dur = -1.0f) {
     } __except (EXCEPTION_EXECUTE_HANDLER) {}
 }
 
-// Persist the finish time if it beats the stored record. One record per
-// mode — difficulty is a selection, not a separate challenge.
+// Persist the finish time if it beats the stored record. Challenge Combat
+// keeps one record per difficulty; Monster Mash and Boss Rush have their
+// own keys. (Endless records waves survived separately.)
 static void RecordTime(DWORD ms) {
     const char* key = g_mode == 2 ? "BestMonster"
-                    : g_mode == 3 ? "BestRush" : "BestTime";
+                    : g_mode == 3 ? "BestRush"
+                    : (g_diff < 3) ? DIFF_KEYS[g_diff] : "BestTime";
     DWORD best = GetPrivateProfileIntA("Challenge", key, 0, INI_FILE);
     if (!best || ms < best) {
         char b[16]; sprintf(b, "%u", ms);
@@ -763,7 +781,8 @@ static void RecordTime(DWORD ms) {
     }
     {
         char b[64];
-        sprintf(b, "COMPLETADO!  %u:%02u", ms / 60000, (ms / 1000) % 60);
+        if (!g_langDetected) DetectLang();
+        sprintf(b, "%s  %u:%02u", HUD_DONE[g_lang], ms / 60000, (ms / 1000) % 60);
         ShowHud(b, RESULT_MS / 1000.0f);
     }
     DiTrace("CHAL finished mode=%d diff=%d time=%.1fs best=%.1fs\n",
@@ -851,8 +870,9 @@ static void WaveTick() {
             g_wstate = 3;
             {
                 char b[48];
-                if (g_diff == 3) sprintf(b, "OLEADA %d", g_wave);
-                else sprintf(b, "OLEADA %d/%d", g_wave, NWAVES());
+                if (!g_langDetected) DetectLang();
+                if (g_diff == 3) sprintf(b, "%s %d", HUD_WAVE[g_lang], g_wave);
+                else sprintf(b, "%s %d/%d", HUD_WAVE[g_lang], g_wave, NWAVES());
                 ShowHud(b);
             }
             DiTrace("CHAL wave %d enter fight\n", g_wave);

@@ -11,7 +11,8 @@ Eight extra rows appear in **New Game** before *Training*:
 
 - **Challenge Combat: Normal / Hard / Extreme** — soldier waves in a
   boiler-room arena (8/10/10 waves; elites on Hard and Extreme). A shared
-  best-time record is kept in `br1mod.ini` (`[Challenge] BestTime`) and
+  best-time record is kept per difficulty in `br1mod.ini`
+  (`[Challenge] BestNormal` / `BestHard` / `BestExtreme`) and
   shown in the menu labels.
 - **Apariencia: <name>** — player-skin cycler, applies to the **whole
   game** (campaign included): the `heroType` field of every
