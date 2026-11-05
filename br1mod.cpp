@@ -220,6 +220,7 @@ static void ComposeLabelB() {
     char cur[64] = "";
     GetPrivateProfileStringA("Appearance", "Boss", "", cur, sizeof(cur), INI_FILE);
     const char* name = cur[0] ? cur : "Barrock";
+    if (!_stricmp(name, "NAZI_BARROCK.DFM")) name = "Barrock";
     // strip .DFM for display
     char disp[64]; strcpy(disp, name);
     char* d = strstr(disp, ".DFM"); if (d) *d = 0;
@@ -233,10 +234,11 @@ static void CycleBoss() {
     for (int i = 0; BOSS_OPTS[i]; i++)
         if (!stricmp(BOSS_OPTS[i], cur)) { idx = i; break; }
     idx++; if (!BOSS_OPTS[idx]) idx = 0;
-    if (BOSS_OPTS[idx][0])
-        WritePrivateProfileStringA("Appearance", "Boss", BOSS_OPTS[idx], INI_FILE);
-    else
-        WritePrivateProfileStringA("Appearance", "Boss", NULL, INI_FILE);
+    // "Barrock" (empty slot) must write the real model, not blank the key:
+    // an empty key never reaches MsnBossBlock, leaving a stale hero-class
+    // Boss1 in the file from a previous selection.
+    const char* val = BOSS_OPTS[idx][0] ? BOSS_OPTS[idx] : "NAZI_BARROCK.DFM";
+    WritePrivateProfileStringA("Appearance", "Boss", val, INI_FILE);
 }
 
 // "Unlock all missions" — the act rows in the level selector are gated by
@@ -500,12 +502,16 @@ static int MsnBossBlock(char* txt, int kind, const char* arg) {
 }
 
 static void ApplyAppearance() {
+    // Only modes 0 (challenge) and 1 (boss battle) have swap targets —
+    // monster/boss-rush MSNs use fixed native classes. Without this the
+    // [Appearance] keys would silently rewrite challenge.msn on those
+    // launches.
+    if (g_mode >= 2) return;
     char sold[64], eli[64], boss[64], bcls[16];
     GetPrivateProfileStringA("Appearance", "Soldier", "", sold, 64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Elite",   "", eli,  64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Boss",    "", boss, 64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "BossClass", "", bcls, 16, INI_FILE);
-    if (!*sold && !*eli && !*boss && !*bcls) return;
 
     const char* msn = g_mode == 1 ? "world\\bossbattle.msn" : "world\\challenge.msn";
     FILE* f = fopen(msn, "rb");
@@ -514,6 +520,13 @@ static void ApplyAppearance() {
     char* txt = (char*)malloc(sz + 0x8000);
     fread(txt, 1, sz, f); fclose(f);
     txt[sz] = 0;
+
+    // Restore check: a cleared Boss key must put Boss1 back to CSoldier —
+    // otherwise a stale hero/NPC block from an earlier run persists.
+    int stale = (g_mode == 1)
+        && (strstr(txt, "{ CNPC \"Boss1\"") || strstr(txt, "{ CMainCharacter \"Boss1\""));
+    if (!*sold && !*eli && !*boss && !*bcls && !stale) { free(txt); return; }
+    if (stale && !*boss && !*bcls) strcpy(boss, "NAZI_BARROCK.DFM");
 
     int n = 0;
     if (*sold) n += MsnSwap(txt, "SoldierS", sold);
