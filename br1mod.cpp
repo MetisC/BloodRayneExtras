@@ -198,6 +198,12 @@ static const char* HUD_DONE[6] = {
     "\xC3\xCE\xD2\xCE\xC2\xCE!",            // RU "ГОТОВО!"
     "CLEAR!",                               // JA
 };
+static const char* HUD_FAIL[6] = {
+    "ERROR: NO ENEMIES SPAWNED", "ERROR: NO APARECEN ENEMIGOS",
+    "ERREUR : AUCUN ENNEMI", "ERRORE: NESSUN NEMICO",
+    "\xCE\xD8\xC8\xC1\xCA\xC0: \xCD\xC5\xD2 \xC2\xD0\xC0\xC3\xCE\xC2", // RU
+    "ERROR: NO ENEMIES SPAWNED",            // JA: EN is idiomatic
+};
 
 // One record per difficulty — each row is a separate challenge.
 static const char* DIFF_KEYS[3] = { "BestNormal", "BestHard", "BestExtreme" };
@@ -943,7 +949,8 @@ static void WaveTick() {
             // A spawn failure is not a victory; do not skip waves or save
             // a bogus best time after the former 3600-script-tick wait.
             ErrTrace("CHAL wave %d spawn failed t=%u\n", g_wave, now);
-            ShowHud("ERROR: NO APARECEN ENEMIGOS");
+            if (!g_langDetected) DetectLang();
+            ShowHud(HUD_FAIL[g_lang]);
             g_wstate = 4;
             return;
         }
