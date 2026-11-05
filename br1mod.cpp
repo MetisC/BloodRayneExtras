@@ -63,6 +63,15 @@
 #define RET_CMD_FETCH  0x510ECB   // inc eax
 #define RET_CMD_REPLAY 0x510ECC   // past the inc: slot index stays -> same slot runs again
 #define G_CMD_MODE     0x1E4B570  // 1=syntax pass, 2=syntaxCheckOff, 0=real run
+
+// CHeroPlaceholder::Update at 0x4905e8: when +0x174==0 it creates the hero
+// (call 0x48e1ac), sets hero HP at +0x584/+0x588 and copies the
+// placeholder's heroType into the hero object at +0x9a0. We hook the copy
+// read so the [Appearance] Skin value overrides every hero spawn —
+// campaign included, no POD touched. heroType field: placeholder+0x178
+// (its ctor writes 1 there at 0x490585).
+#define SITE_HERO_TYPE 0x490612   // mov ecx,[edi+0x178] (6B)
+#define RET_HERO_TYPE  0x490618   // -> mov [esi+0x9a0],ecx
 #define G_HERO_A       0x1C4AECC
 #define G_HERO_B       0x1D1F530
 #define FN_FIND_HERO   0x40E200   // cdecl(a,b) -> hero*; handlers write hero+0x5b48..0x5b50
@@ -109,7 +118,9 @@ static int   g_autokill = 0;   // ini [Challenge] Autokill — test-only wave bl
 static DWORD g_fnLocalize, g_fnAddItem, g_progByte, g_itemsOff4;
 static DWORD g_retMenuInj, g_retDispatch, g_retHandled, g_retCmdFetch, g_retCmdFetchReplay;
 static DWORD g_retMissionGo, g_missionName, g_fnFindActor, g_actorMgrPtr;
-static DWORD g_fnRespawnMotion;
+static DWORD g_fnRespawnMotion, g_retHeroType;
+static DWORD g_htVal;             // SkinHeroType() result for the spawn hook
+static int   g_skinPending;       // hero spawned with our skin — restore +0x9a0 to 1
 static int   g_replay;
 
 typedef const char* (__cdecl *Localize_t)(const char*);
@@ -278,34 +289,8 @@ static int SkinHeroType() {
     return 0;
 }
 
-// Patch every CHeroPlaceholder record's heroType (record+0x178, from the
-// class serializer's `add esi,0x178; push "heroType"` in rayne1.exe)
-// before it instantiates the hero — this is what makes the skin apply
-// to campaign missions too, whose MSNs live inside the PODs.
-static void PatchHeroType(int ht) {
-    DWORD mgr = *(DWORD*)g_actorMgrPtr;
-    if (!mgr) return;
-    __try {
-        DWORD rec = *(DWORD*)(mgr + 0x1218);
-        int guard = 0x4000;
-        while (rec && --guard > 0) {
-            DWORD nxt = *(DWORD*)(rec + 0x148);
-            const char* nm = (const char*)(rec + 4);
-            if (!_strnicmp(nm, "HeroPlaceholder", 15)) {
-                DWORD cur = *(DWORD*)(rec + 0x178);
-                // sanity: only plausible heroType values get rewritten —
-                // if the offset ever stops matching the class layout we
-                // must not scribble over an unrelated field
-                if (cur >= 1 && cur <= 8 && cur != (DWORD)ht) {
-                    DiTrace("SKIN placeholder %s ht %u->%d\n", nm, cur, ht);
-                    *(DWORD*)(rec + 0x178) = ht;
-                }
-            }
-            if (nxt == rec) break;
-            rec = nxt;
-        }
-    } __except (EXCEPTION_EXECUTE_HANDLER) {}
-}
+// [Appearance] Skin -> heroType, or 0 for Default/unset/unknown (leave
+// campaign missions stock; arenas treat 0 as Rayne).
 
 static int MsnSkin(char* txt, int ht) {
     char* p = strstr(txt, "{ CHeroPlaceholder");
@@ -991,14 +976,22 @@ static int FlagGet(const char* name) {
 
 // Reads the hero's availability fields the engine's own handlers write
 // ([hero+0x5b48] zoom, +0x5b49 slowmo, +0x5b4c/+0x5b50 combo).
+// Resolve the live hero object (the thing heroType is copied into at
+// spawn), via the engine's own finder 0x40E200(a=heroGlobA,b=heroGlobB).
+static DWORD HeroObj() {
+    DWORD a = *(DWORD*)g_heroGlobA, b = *(DWORD*)g_heroGlobB,
+          fn = g_fnFindHero, hero = 0;
+    __asm { push b
+            push a
+            call fn
+            add esp, 8
+            mov hero, eax }
+    return hero;
+}
+
 static void LogHero(const char* why) {
     __try {
-        DWORD a = *(DWORD*)g_heroGlobA, b = *(DWORD*)g_heroGlobB, fn = g_fnFindHero, hero;
-        __asm { push b
-                push a
-                call fn
-                add esp, 8
-                mov hero, eax }
+        DWORD hero = HeroObj();
         if (!hero) { DiTrace("  [%s] hero=NULL\n", why); return; }
         DiTrace("  [%s] hero=%08X zoom=%d slow=%d combo=%d,%d powerMoves=%d\n", why, hero,
                 *(BYTE*)(hero + 0x5b48), *(BYTE*)(hero + 0x5b49),
@@ -1040,6 +1033,27 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     g_prevEntry = entry; g_prevIdx = idx;
     if (!t) return 0;
 
+    // Skin retag: a hero spawned with a non-Default skin keeps the model
+    // (bound lazily right after the spawn call), but heroType at hero+0x9a0
+    // also feeds AI hostility — ht!=1 makes enemies treat the player as
+    // friendly and never aggro. Restore it to 1 once the bind window has
+    // passed. g_skinPending holds a GetTickCount deadline (0 = idle).
+    if (g_skinPending && (int)(GetTickCount() - (DWORD)g_skinPending) >= 0) {
+        DWORD h = HeroObj();
+        if (h) {
+            __try {
+                if (*(DWORD*)(h + 0x9a0) != 1) {
+                    DiTrace("SKIN retag hero ht %u->1 (model stays)\n",
+                            *(DWORD*)(h + 0x9a0));
+                    *(DWORD*)(h + 0x9a0) = 1;
+                }
+            } __except (EXCEPTION_EXECUTE_HANDLER) {}
+            g_skinPending = 0;
+        } else {
+            g_skinPending = (int)GetTickCount() + 600;   // retry once more
+        }
+    }
+
     // --- idle mailbox: this entry currently runs a queued command ---
     {
         int m = MboxFind(entry);
@@ -1066,14 +1080,8 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     // back to the menu and started a campaign act) drops the stale
     // challenge state.
     if (idx == 0 && mode == 0 && !again) {
-        // Player skin for EVERY mission (arenas too — belt&braces next
-        // to the MSN file rewrite): heroType is consumed when the
-        // placeholder instantiates the hero, which happens after the
-        // script's first fetch. "Default" (ht=0) never touches story.
-        {
-            int ht = SkinHeroType();
-            if (ht) PatchHeroType(ht);
-        }
+        // Player skin is applied by the HookHeroType detour inside
+        // CHeroPlaceholder::Update — nothing to do here.
         if (g_challenge == 1 ||
             (g_challenge == 2 && !HeroSpawned())) {
             const char* want = g_mode == 2 ? MSN_MONSTER
@@ -1287,6 +1295,32 @@ static void __declspec(naked) HookDispatch() {
         ret
     back:
         push g_retDispatch
+        ret
+    }
+}
+
+// Runs inside CHeroPlaceholder::Update right where heroType is copied
+// from the placeholder (edi) into the new hero object (esi+0x9a0). A
+// non-Default skin wins; Default passes the MSN value through.
+static void __declspec(naked) HookHeroType() {
+    __asm {
+        pushad
+        call SkinHeroType
+        mov g_htVal, eax
+        popad
+        mov ecx, g_htVal
+        test ecx, ecx
+        jnz useours
+        mov ecx, [edi + 0x178]          // stolen: placeholder.heroType
+        jmp store
+    useours:
+        pushad
+        call GetTickCount               // retag hero once the lazy model
+        add eax, 400                    // bind (~next frames) has consumed
+        mov g_skinPending, eax          // the ht — delay is wall-clock, not
+        popad                           // fetch count (fetches run per-frame)
+    store:
+        push g_retHeroType               // -> mov [esi+0x9a0],ecx
         ret
     }
 }
@@ -1545,6 +1579,7 @@ static DWORD WINAPI Worker(LPVOID) {
     g_fnFindHero = RVA(FN_FIND_HERO);
     g_fnFlagGet  = RVA(FN_FLAG_GET);
     g_flagMgrPtr = RVA(G_FLAG_MGR);
+    g_retHeroType = RVA(RET_HERO_TYPE);
     g_powers = GetPrivateProfileIntA("Powers", "all", 0, INI_FILE) ? 1 : 0;
     // (mission-unlock row removed per user request)
     DiTrace("WORKER base=%08X powers=%d\n", g_exeBase, g_powers);
@@ -1559,6 +1594,8 @@ static DWORD WINAPI Worker(LPVOID) {
     // cmd fetch: mov esi,[ecx+4] (8B 71 04) + mov [ebp-0x3fc],eax
     // (89 85 04 FC FF FF) — no absolute addrs, plain byte check.
     PatchChecked(RVA(SITE_CMD_FETCH), "\x8b\x71\x04\x89\x85\x04\xfc\xff\xff", 9, HookCmdFetch);
+    // heroType copy: mov ecx,[edi+0x178] — no absolute addrs, byte check.
+    PatchChecked(RVA(SITE_HERO_TYPE), "\x8b\x8f\x78\x01\x00\x00", 6, HookHeroType);
     return 0;
 }
 
