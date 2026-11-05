@@ -164,9 +164,10 @@ static const char* LABEL_CH[6][6] = {
 };
 
 // Player-skin cycler: name -> heroType written into CHeroPlaceholder.
+// "Default" = Rayne in the arenas and untouched in the campaign.
 // RayneLA (heroType 4) is out — it renders the stock Rayne model.
-static const char* SKIN_OPTS[] = { "Rayne", "Mynce", "Butcheress", NULL };
-static const int   SKIN_HTS[]  = { 1, 2, 3 };
+static const char* SKIN_OPTS[] = { "Default", "Rayne", "Mynce", "Butcheress", NULL };
+static const int   SKIN_HTS[]  = { 0, 1, 2, 3 };   // 0 = don't patch
 
 static const char* LABEL_SKIN[6] = {
     "Appearance", "Apariencia", "Apparence",
@@ -211,7 +212,7 @@ static void ComposeLabelK() {
     for (int i = 0; SKIN_OPTS[i]; ++i)
         if (!stricmp(SKIN_OPTS[i], cur)) { known = 1; break; }
     sprintf(g_labelK, "%s: %s", ModLocalize(LABEL_SKIN[g_lang]),
-            known ? cur : "Rayne");
+            known ? cur : "Default");
 }
 
 static void CycleSkin() {
@@ -267,6 +268,45 @@ static int MsnSwap(char* txt, const char* namePat, const char* model) {
 
 // Rewrite the heroType number inside { CHeroPlaceholder "HeroPlaceholder0"
 // (player model: 1=Rayne 2=Mynce 3=Butcheress 4=Rayne act 1).
+// [Appearance] Skin -> heroType, or 0 for Default/unset/unknown (leave
+// campaign missions stock; arenas treat 0 as Rayne).
+static int SkinHeroType() {
+    char skin[64];
+    GetPrivateProfileStringA("Appearance", "Skin", "", skin, sizeof(skin), INI_FILE);
+    for (int i = 0; SKIN_OPTS[i]; ++i)
+        if (!_stricmp(skin, SKIN_OPTS[i])) return SKIN_HTS[i];
+    return 0;
+}
+
+// Patch every CHeroPlaceholder record's heroType (record+0x178, from the
+// class serializer's `add esi,0x178; push "heroType"` in rayne1.exe)
+// before it instantiates the hero — this is what makes the skin apply
+// to campaign missions too, whose MSNs live inside the PODs.
+static void PatchHeroType(int ht) {
+    DWORD mgr = *(DWORD*)g_actorMgrPtr;
+    if (!mgr) return;
+    __try {
+        DWORD rec = *(DWORD*)(mgr + 0x1218);
+        int guard = 0x4000;
+        while (rec && --guard > 0) {
+            DWORD nxt = *(DWORD*)(rec + 0x148);
+            const char* nm = (const char*)(rec + 4);
+            if (!_strnicmp(nm, "HeroPlaceholder", 15)) {
+                DWORD cur = *(DWORD*)(rec + 0x178);
+                // sanity: only plausible heroType values get rewritten —
+                // if the offset ever stops matching the class layout we
+                // must not scribble over an unrelated field
+                if (cur >= 1 && cur <= 8 && cur != (DWORD)ht) {
+                    DiTrace("SKIN placeholder %s ht %u->%d\n", nm, cur, ht);
+                    *(DWORD*)(rec + 0x178) = ht;
+                }
+            }
+            if (nxt == rec) break;
+            rec = nxt;
+        }
+    } __except (EXCEPTION_EXECUTE_HANDLER) {}
+}
+
 static int MsnSkin(char* txt, int ht) {
     char* p = strstr(txt, "{ CHeroPlaceholder");
     if (!p) return 0;
@@ -294,12 +334,9 @@ static void ApplyAppearance() {
     GetPrivateProfileStringA("Appearance", "Elite",   "", eli,  64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Skin",    "", skin, 64, INI_FILE);
 
-    int ht = 0;
-    for (int i = 0; SKIN_OPTS[i]; ++i)
-        if (!_stricmp(skin, SKIN_OPTS[i])) { ht = SKIN_HTS[i]; break; }
-    // A stale value from a removed option (e.g. RayneLA) would silently
-    // show Rayne anyway — normalize it so the file gets heroType=1.
-    if (*skin && !ht) ht = 1;
+    // Arenas always carry an explicit heroType: Default/unknown -> Rayne.
+    int ht = SkinHeroType();
+    if (!ht) ht = 1;
 
     const char* msn = g_mode == 2 ? "world\\monster.msn"
                     : g_mode == 3 ? "world\\bossrush.msn"
@@ -1029,6 +1066,14 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     // back to the menu and started a campaign act) drops the stale
     // challenge state.
     if (idx == 0 && mode == 0 && !again) {
+        // Player skin for EVERY mission (arenas too — belt&braces next
+        // to the MSN file rewrite): heroType is consumed when the
+        // placeholder instantiates the hero, which happens after the
+        // script's first fetch. "Default" (ht=0) never touches story.
+        {
+            int ht = SkinHeroType();
+            if (ht) PatchHeroType(ht);
+        }
         if (g_challenge == 1 ||
             (g_challenge == 2 && !HeroSpawned())) {
             const char* want = g_mode == 2 ? MSN_MONSTER

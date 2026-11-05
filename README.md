@@ -13,9 +13,11 @@ Eight extra rows appear in **New Game** before *Training*:
   boiler-room arena (8/10/10 waves; elites on Hard and Extreme). A shared
   best-time record is kept in `br1mod.ini` (`[Challenge] BestTime`) and
   shown in the menu labels.
-- **Apariencia: <name>** — player-skin cycler. Rewrites the `heroType`
-  of the mission's `CHeroPlaceholder` (1=Rayne, 2=Mynce, 3=Butcheress)
-  so you *play* as the chosen character in every arena. Persists to
+- **Apariencia: <name>** — player-skin cycler, applies to the **whole
+  game** (campaign included): the `heroType` field of every
+  `CHeroPlaceholder` record is patched in memory before it instantiates
+  the hero (1=Rayne, 2=Mynce, 3=Butcheress). `Default` = Rayne in the
+  arenas and completely stock in the story. Persists to
   `[Appearance] Skin`. Note: Butcheress fights with her blade arms and
   can't pick up guns — that's her real move set, not a bug.
 - **Monster Mash** — a monster arena over 6 waves: swamp packs
@@ -66,9 +68,12 @@ launch time (file-level, before the engine loads it):
   `SOLDIER`, `SS_SOLDIER`, `SS_OFFICER`, `GGG_OFFICER`, `GGG_ELITE`,
   `GGG_HAZMAT`, `GGG_JETPACK`, `STALKER`, `ARGSLAVE`, `ARGSLAVESHIRT`,
   `NAZI_BARROCK` (all `.DFM`). Challenge-arena rows only.
-- `Skin=` — player model via `heroType`: `Rayne`/`Mynce`/`Butcheress`
-  (the *Apariencia* menu row edits this). Applies to all arenas.
-  (`RayneLA`/heroType 4 exists but renders the stock Rayne — dropped.)
+- `Skin=` — player model via `heroType`: `Default`/`Rayne`/`Mynce`/
+  `Butcheress` (the *Apariencia* menu row edits this). Applies to every
+  mission — the `CHeroPlaceholder` record's `heroType` (+0x178) is
+  patched at script start; `Default` or an unset key leaves story
+  missions stock. (`RayneLA`/heroType 4 exists but renders the stock
+  Rayne — dropped.)
 
 Leave the keys unset/commented for stock models.
 
