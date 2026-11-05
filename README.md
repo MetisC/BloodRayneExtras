@@ -7,7 +7,7 @@ modified.
 
 ## Challenge arenas
 
-Six extra rows appear in **New Game** before *Training*:
+Nine extra rows appear in **New Game** before *Training*:
 
 - **Challenge Combat: Normal / Hard / Extreme** — soldier waves in a
   boiler-room arena (8/10/10 waves; elites on Hard and Extreme). A shared
@@ -21,6 +21,15 @@ Six extra rows appear in **New Game** before *Training*:
 - **Monster Mash** — a monster arena over 6 waves: swamp packs
   (CMaraisreq), church mutates (CMutate) and the Act-1 Queen (CQueen)
   as the final boss. Separate record: `[Challenge] BestMonster`.
+- **Boss Rush** — six waves, one boss each: Barrock, Butcheress, Mynce,
+  RayneLA, Rayne and the Act-1 Queen finale (plus 2 adds per wave).
+  Separate record: `[Challenge] BestRush`.
+- **Endless Horde** — never-ending soldier waves that keep ramping up
+  (bigger squads, more elites). The record is waves survived:
+  `[Challenge] BestWaves`; HUD shows `OLEADA n` (no total).
+- **Unlock all missions** — forces the progression byte the level
+  selector checks (`>=3` = all acts visible) and restores the original
+  value when toggled off. Persisted in `[Missions] all`.
 
 Native HUD feedback during fights: `OLEADA n/N` per wave and
 `COMPLETADO! m:ss` on completion via the game's own message renderer

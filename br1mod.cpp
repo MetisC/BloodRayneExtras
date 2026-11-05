@@ -85,18 +85,25 @@
 #define ACTION_CH_B     0x164   // Boss Battle
 #define ACTION_BOSSSEL  0x165   // boss-appearance cycler
 #define ACTION_MONSTER  0x166   // Monster Mash arena
+#define ACTION_BOSSRUSH 0x167   // Boss Rush arena
+#define ACTION_INFINITE 0x168   // endless horde (record = waves)
+#define ACTION_MISSIONS 0x169   // unlock all missions
 
 #define INI_FILE       ".\\br1mod.ini"
 #define MSN_CHALLENGE  "challenge.msn"
 #define MSN_BOSSBATTLE "bossbattle.msn"
 #define MSN_MONSTER    "monster.msn"
+#define MSN_BOSSRUSH   "bossrush.msn"
 
 // ----------------------------- state --------------------------------------
 static DWORD g_exeBase = 0;
 static int   g_powers = 0;
 static char  g_label[160];
-static char  g_labelS[5][160];
+static char  g_labelS[7][160];
 static char  g_labelB[160];
+static char  g_labelM[160];
+static int   g_missions = 0;
+static BYTE  g_progOrig = 0xFF;
 static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-level
 static int   g_diff = 0;       // 0 Normal, 1 Hard, 2 Extreme
 static int   g_mode = 0;       // 0 Challenge Combat, 1 Boss Battle
@@ -145,7 +152,7 @@ static const char* LABEL_POWERS[6] = {
     "\x82\xB7\x82\xD7\x82\xC4\x82\xCC\x83\x70\x83\x8F\x81\x5B\x82\xC6\x83\x52\x83\x93\x83\x7B", // JA "すべてのパワーとコンボ"
 };
 
-static const char* LABEL_CH[5][6] = {
+static const char* LABEL_CH[7][6] = {
     { "Challenge Combat: Normal", "Desaf\xEDo: Normal", "Challenge Combat: Normal",
       "Challenge Combat: Normal", "Challenge Combat: Normal", "Challenge Combat: Normal" },
     { "Challenge Combat: Hard", "Desaf\xEDo: Dif\xED""cil", "Challenge Combat: Hard",
@@ -156,6 +163,15 @@ static const char* LABEL_CH[5][6] = {
       "Boss Battle", "Boss Battle", "Boss Battle" },
     { "Monster Mash", "Mar de monstruos", "Monster Mash",
       "Monster Mash", "Monster Mash", "Monster Mash" },
+    { "Boss Rush", "Racha de jefes", "Boss Rush",
+      "Boss Rush", "Boss Rush", "Boss Rush" },
+    { "Endless Horde", "Horda infinita", "Endless Horde",
+      "Endless Horde", "Endless Horde", "Endless Horde" },
+};
+
+static const char* LABEL_MIS[6] = {
+    "Unlock all missions", "Desbloquear misiones", "Unlock all missions",
+    "Unlock all missions", "Unlock all missions", "Unlock all missions",
 };
 
 static const char* LABEL_BSEL[6] = {
@@ -187,10 +203,13 @@ static void ComposeLabelS(int d) {
     const char* lbl = ModLocalize(LABEL_CH[d][g_lang]);
     // One shared best time per mode — shown on every row of that mode.
     DWORD best = GetPrivateProfileIntA("Challenge",
-                                       d == 3 ? "BestBoss" : d == 4 ? "BestMonster" : "BestTime",
+                                       d == 3 ? "BestBoss" : d == 4 ? "BestMonster"
+                                            : d == 5 ? "BestRush" : d == 6 ? "BestWaves"
+                                            : "BestTime",
                                        0, INI_FILE);
     if (best)
-        sprintf(g_labelS[d], "%s - %u:%02u", lbl, best / 60000, (best / 1000) % 60);
+        sprintf(g_labelS[d], d == 6 ? "%s - %u" : "%s - %u:%02u",
+                lbl, d == 6 ? best : best / 60000, (best / 1000) % 60);
     else
         sprintf(g_labelS[d], "%s", lbl);
 }
@@ -218,6 +237,28 @@ static void CycleBoss() {
         WritePrivateProfileStringA("Appearance", "Boss", BOSS_OPTS[idx], INI_FILE);
     else
         WritePrivateProfileStringA("Appearance", "Boss", NULL, INI_FILE);
+}
+
+// "Unlock all missions" — the act rows in the level selector are gated by
+// the progression byte the menu hook already reads (cmp byte[prog],3).
+// ON forces it to 3+ (all acts visible); OFF restores the saved value.
+static void ApplyMissions() {
+    if (!g_progByte) return;
+    if (g_progOrig == 0xFF) g_progOrig = *(BYTE*)g_progByte;
+    *(BYTE*)g_progByte = g_missions
+        ? (g_progOrig < 3 ? 3 : g_progOrig)
+        : g_progOrig;
+}
+static void ToggleMissions() {
+    g_missions ^= 1;
+    WritePrivateProfileStringA("Missions", "all", NULL, INI_FILE);
+    WritePrivateProfileStringA("Missions", "all", g_missions ? "1" : "0", INI_FILE);
+    ApplyMissions();
+}
+static void ComposeLabelM() {
+    if (!g_langDetected) DetectLang();
+    sprintf(g_labelM, "%s: %s", ModLocalize(LABEL_MIS[g_lang]),
+            ModLocalize(g_missions ? "Yes" : "No"));
 }
 
 // -------------------------- appearance swap --------------------------------
@@ -522,6 +563,14 @@ static void StartChallenge(int d) {
         strcpy((char*)g_missionName, MSN_MONSTER);
         g_mode = 2;
         g_diff = 0;
+    } else if (d == 5) {
+        strcpy((char*)g_missionName, MSN_BOSSRUSH);
+        g_mode = 3;
+        g_diff = 0;
+    } else if (d == 6) {
+        strcpy((char*)g_missionName, MSN_CHALLENGE);
+        g_mode = 0;
+        g_diff = 3;               // endless
     } else {
         strcpy((char*)g_missionName, MSN_CHALLENGE);
         g_mode = 0;
@@ -665,8 +714,11 @@ static void MboxSet(BYTE* e, char* orig, char* cmd) {
 
 // Wave campaign per mode/difficulty. Time runs from the first spawn until
 // the last wave is cleared; one best time is kept per mode in the ini.
-static const int CH_WAVES[3][3] = { { 8, 10, 10 }, { 6, 6, 6 }, { 6, 6, 6 } };
-#define NWAVES() CH_WAVES[g_mode][g_diff]
+static const int CH_WAVES[4][3] = { { 8, 10, 10 }, { 6, 6, 6 }, { 6, 6, 6 }, { 6, 6, 6 } };
+static int NWAVES() {
+    if (g_diff == 3) return 999;    // Endless Horde
+    return CH_WAVES[g_mode][g_diff];
+}
 
 // Boss Battle (mode 1) fixed 6-wave gauntlet — officers, then sub-officers
 // joining in, ending with the boss + escort.
@@ -674,12 +726,16 @@ static const int B_SZ[6] = { 4, 5, 5, 6, 6, 2 };
 static const int B_EL[6] = { 0, 0, 1, 2, 3, 2 };
 
 static int WaveSize(int w) {   // w is 1-based
+    if (g_mode == 3) return 2;               // Boss Rush: 2 adds per boss
     if (g_mode >= 1) return B_SZ[min(w, 6) - 1];
+    if (g_diff == 3) return min(6 + w / 2, 14);  // Endless: ramps forever
     if (g_diff == 2) return 11;              // Extreme: brute squads
     return min(3 + w + g_diff, 8 + 2 * g_diff);
 }
 static int WaveElites(int w) {
+    if (g_mode == 3) return 0;
     if (g_mode >= 1) return B_EL[min(w, 6) - 1];
+    if (g_diff == 3) return min(1 + w / 4, 3);   // Endless: elites ramp too
     if (g_diff == 0) return 0;               // Normal: plain soldiers only
     if (g_diff == 2) return 3;               // Extreme: elites every wave
     return (w % 3 == 0) ? (w >= 9 ? 2 : 1) : 0;  // Hard: waves 3,6,9
@@ -787,8 +843,9 @@ static void QueueWave(int w) {
         sprintf(n, "EliteS%d", (g_eliteRot++ % nelites) + 1);
         QueueSpawn(n);
     }
-    // Boss Battle finale: the boss drops in on the last wave.
-    if (g_mode >= 1 && w == NWAVES()) QueueSpawn("Boss1");
+    // Boss Rush: every wave's own boss; Boss Battle: boss on the last wave.
+    if (g_mode == 3) { sprintf(n, "Boss%d", min(w, 6)); QueueSpawn(n); }
+    else if (g_mode >= 1 && w == NWAVES()) QueueSpawn("Boss1");
     DiTrace("CHAL wave %d/%d queued (%d+%d actors, diff=%d mode=%d)\n",
             w, NWAVES(), cnt, eli, g_diff, g_mode);
 }
@@ -817,7 +874,8 @@ static void ShowHud(const char* text) {
 // Persist the finish time if it beats the stored record. One record per
 // mode — difficulty is a selection, not a separate challenge.
 static void RecordTime(DWORD ms) {
-    const char* key = g_mode == 1 ? "BestBoss" : g_mode == 2 ? "BestMonster" : "BestTime";
+    const char* key = g_mode == 1 ? "BestBoss" : g_mode == 2 ? "BestMonster"
+                    : g_mode == 3 ? "BestRush" : "BestTime";
     DWORD best = GetPrivateProfileIntA("Challenge", key, 0, INI_FILE);
     if (!best || ms < best) {
         char b[16]; sprintf(b, "%u", ms);
@@ -839,7 +897,8 @@ static void RecordTime(DWORD ms) {
 static void WaveTick() {
     // Mission buffer must still match the armed arena — cancels if the
     // player left for another mission/menu.
-    const char* want = g_mode == 1 ? MSN_BOSSBATTLE : g_mode == 2 ? MSN_MONSTER : MSN_CHALLENGE;
+    const char* want = g_mode == 1 ? MSN_BOSSBATTLE : g_mode == 2 ? MSN_MONSTER
+                     : g_mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE;
     if (_strnicmp((char*)g_missionName, want, strlen(want))) {
         g_challenge = 0;
         g_qHead = g_qTail = 0;
@@ -899,7 +958,8 @@ static void WaveTick() {
             g_wstate = 3; g_seenAlive = 0; g_stallGuard = 3600;
             {
                 char b[48];
-                sprintf(b, "OLEADA %d/%d", g_wave, NWAVES());
+                if (g_diff == 3) sprintf(b, "OLEADA %d", g_wave);
+                else sprintf(b, "OLEADA %d/%d", g_wave, NWAVES());
                 ShowHud(b);
             }
             DiTrace("CHAL wave %d enter fight\n", g_wave);
@@ -962,6 +1022,14 @@ static void WaveTick() {
             RecordTime(GetTickCount() - g_t0);
             g_wstate = 4;
             return;
+        }
+        // Endless Horde: persist waves survived as the record.
+        if (g_diff == 3) {
+            DWORD bw = GetPrivateProfileIntA("Challenge", "BestWaves", 0, INI_FILE);
+            if (g_wave > (int)bw) {
+                char b[16]; sprintf(b, "%d", g_wave);
+                WritePrivateProfileStringA("Challenge", "BestWaves", b, INI_FILE);
+            }
         }
         ++g_wave;
         QueueWave(g_wave);
@@ -1173,6 +1241,28 @@ static void __declspec(naked) HookMenuInj() {
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
+        push 5
+        call ComposeLabelS
+        add esp, 4
+        mov ecx, offset g_labelS + 800
+        mov eax, ACTION_BOSSRUSH
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
+        push 6
+        call ComposeLabelS
+        add esp, 4
+        mov ecx, offset g_labelS + 960
+        mov eax, ACTION_INFINITE
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
+        call ComposeLabelM
+        mov ecx, offset g_labelM
+        mov eax, ACTION_MISSIONS
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
         popad
         push edx
         mov edx, g_progByte
@@ -1234,11 +1324,33 @@ static void __declspec(naked) HookDispatch() {
         ret
     trymon:
         cmp edi, ACTION_MONSTER
-        jne back
+        jne tryrush
         push 4
         call StartChallenge
         add esp, 4
         push g_retMissionGo
+        ret
+    tryrush:
+        cmp edi, ACTION_BOSSRUSH
+        jne tryinf
+        push 5
+        call StartChallenge
+        add esp, 4
+        push g_retMissionGo
+        ret
+    tryinf:
+        cmp edi, ACTION_INFINITE
+        jne trymis
+        push 6
+        call StartChallenge
+        add esp, 4
+        push g_retMissionGo
+        ret
+    trymis:
+        cmp edi, ACTION_MISSIONS
+        jne back
+        call ToggleMissions
+        push g_retHandled
         ret
     back:
         push g_retDispatch
@@ -1494,6 +1606,8 @@ static DWORD WINAPI Worker(LPVOID) {
     g_fnFlagGet  = RVA(FN_FLAG_GET);
     g_flagMgrPtr = RVA(G_FLAG_MGR);
     g_powers = GetPrivateProfileIntA("Powers", "all", 0, INI_FILE) ? 1 : 0;
+    g_missions = GetPrivateProfileIntA("Missions", "all", 0, INI_FILE) ? 1 : 0;
+    ApplyMissions();
     DiTrace("WORKER base=%08X powers=%d\n", g_exeBase, g_powers);
     // Expected-byte patterns carry absolute VAs that the loader rebases
     // (the disp32 fields), so they are built at runtime from g_exeBase.
