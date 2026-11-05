@@ -7,3 +7,5 @@ br1mod.exp
 *.pdb
 *.log
 *.bak*
+/backups/
+/tools/.wave-test/

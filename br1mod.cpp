@@ -71,12 +71,12 @@
 
 // Actor lookup used by the isDead/createActor handlers: edi=name,
 // ecx=[0x62ED00] actor manager, call 0x4D9420 -> record/actor or NULL.
-// [actor+0xD4] is an engine "ping" field overwritten every tick on live
-// actors — isDead writes a sentinel there and reads it back next pass.
+// [actor+0xD4] is the enabled flag, NOT a heartbeat or a death flag.
+// Enabled corpses retain 0x78A123; vtable+0xD8 supplies the death state.
 #define FN_FIND_ACTOR  0x4D9420
 #define G_ACTOR_MGR    0x62ED00
-#define ACT_PING       0xD4
-#define PING_MAGIC     0x78A123
+#define ACT_ENABLED       0xD4
+#define ACT_ENABLED_MAGIC 0x78A123
 
 #define ACTION_POWERS   0x160   // >=0x15d: outside native action range (<=0x15c)
 #define ACTION_CH_N     0x161   // Challenge Combat: Normal
@@ -114,6 +114,7 @@ static int   g_autokill = 0;   // ini [Challenge] Autokill — test-only wave bl
 static DWORD g_fnLocalize, g_fnAddItem, g_progByte, g_itemsOff4;
 static DWORD g_retMenuInj, g_retDispatch, g_retHandled, g_retCmdFetch, g_retCmdFetchReplay;
 static DWORD g_retMissionGo, g_missionName, g_fnFindActor, g_actorMgrPtr;
+static DWORD g_fnRespawnMotion;
 static int   g_replay;
 
 typedef const char* (__cdecl *Localize_t)(const char*);
@@ -184,8 +185,9 @@ static const char* BOSS_OPTS[] = {
 };
 
 // Player-skin cycler: name -> heroType written into CHeroPlaceholder.
-static const char* SKIN_OPTS[] = { "Rayne", "Mynce", "Butcheress", "RayneLA", NULL };
-static const int   SKIN_HTS[]  = { 1, 2, 3, 4 };
+// RayneLA (heroType 4) is out — it renders the stock Rayne model.
+static const char* SKIN_OPTS[] = { "Rayne", "Mynce", "Butcheress", NULL };
+static const int   SKIN_HTS[]  = { 1, 2, 3 };
 
 static const char* ModLocalize(const char* key) {
     const char* t = Localize(key);
@@ -249,8 +251,11 @@ static void ComposeLabelK() {
     if (!g_langDetected) DetectLang();
     char cur[64] = "";
     GetPrivateProfileStringA("Appearance", "Skin", "", cur, sizeof(cur), INI_FILE);
+    int known = 0;
+    for (int i = 0; SKIN_OPTS[i]; ++i)
+        if (!stricmp(SKIN_OPTS[i], cur)) { known = 1; break; }
     sprintf(g_labelK, "%s: %s", ModLocalize(LABEL_SKIN[g_lang]),
-            cur[0] ? cur : "Rayne");
+            known ? cur : "Rayne");
 }
 
 static void CycleSkin() {
@@ -535,6 +540,9 @@ static void ApplyAppearance() {
     int ht = 0;
     for (int i = 0; SKIN_OPTS[i]; ++i)
         if (!_stricmp(skin, SKIN_OPTS[i])) { ht = SKIN_HTS[i]; break; }
+    // A stale value from a removed option (e.g. RayneLA) would silently
+    // show Rayne anyway — normalize it so the file gets heroType=1.
+    if (*skin && !ht) ht = 1;
 
     const char* msn = g_mode == 1 ? "world\\bossbattle.msn"
                     : g_mode == 2 ? "world\\monster.msn"
@@ -786,13 +794,17 @@ static int WaveElites(int w) {
 static char g_spawned[SP_MAX][32];
 static int  g_nSpawned;
 static int  g_wave;
-static int  g_wstate;      // 0 idle, 1 spawning, 2 settle, 3 fight, 4 done
-static int  g_settle;
-static int  g_seenAlive;
-static int  g_stallGuard;
+static int  g_wstate;      // 0 idle, 1 spawning, 2 settle, 3 fight, 4 done/error, 5 gap, 6 result
+static int  g_seenActors;  // includes corpses killed before the spawn queue drained
+static int  g_lastAlive;
+static DWORD g_stateSince;
+static const DWORD WAVE_GAP_MS = 3500;
+static const DWORD SPAWN_SETTLE_MS = 250;
+static const DWORD SPAWN_TIMEOUT_MS = 5000;
+static const DWORD RESULT_MS = 5000;
 static DWORD g_t0;
 static int  g_soldierRot, g_eliteRot, g_wpRot;
-static int  g_dbgAlive;   // bounded debug logging for ActorAlive decisions
+static int  g_dbgAlive;   // bounded actor-read fault logging
 static int  g_dbgInj;     // bounded debug logging for mailbox injections
 
 // Actor manager lookup (thiscall on [0x62ED00]): record or NULL.
@@ -806,37 +818,102 @@ static DWORD FindActor(const char* name) {
     return r;
 }
 
-// Actor liveness, mirroring the engine's own isDead handler at 0x45CDFB:
-// seed the ping sentinel; if the engine refreshed the field it is ticking
-// (alive); if the sentinel survived, fall back to the record's liveness
-// vmethod at [vtable+0xd8] (thiscall) — return>1 means alive. 0x45CE38.
-// Actor liveness for wave tracking. +0xD4 is the engine's per-frame
-// heartbeat: ticking records are rewritten to 0x6F3874E each frame,
-// while deactivated/killed actors keep the dormant marker 0x78A123.
-// The native isDead (0x45CDEB) additionally falls back to the liveness
-// vmethod (vtable+0xD8), but that call returns stale >1 verdicts for
-// records that were activated and deactivated again — for wave
-// purposes the heartbeat marker alone is authoritative.
-static int ActorAlive(int i) {
-    DWORD a = FindActor(g_spawned[i]);
-    if (!a) return 0;
-    DWORD d4;
-    __try { d4 = *(DWORD*)(a + ACT_PING); }
-    __except (EXCEPTION_EXECUTE_HANDLER) { return 0; }
-    return (d4 != PING_MAGIC) ? 1 : 0;
-}
-
-// Same liveness check for an arbitrary record (hero gate).
-static int RecordLive(DWORD a) {
-    DWORD r = 0;
-    if (!a) return 0;
+// The native isDead(...,notAlive) handler at 0x45CE88 tests vtable+0xD8
+// for nonzero: 0=alive, 1=dying, >1=dead. See e.g. 0x4163A0/0x53DFE0.
+// Disabled declarations return 2 even without ever having spawned.
+static int RecordAlive(DWORD a) {
+    DWORD r;
     __try {
         DWORD vt = *(DWORD*)a, fn = *(DWORD*)(vt + 0xd8);
         __asm { mov ecx, a
                 call fn
                 mov r, eax }
-    } __except (EXCEPTION_EXECUTE_HANDLER) { return 0; }
-    return (r > 1) ? 1 : 0;
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        if (g_dbgAlive++ < 8) DiTrace("CHAL death-state read fault rec=%08X\n", a);
+        return 1;  // an unreadable actor must not falsely clear a wave
+    }
+    return r == 0;
+}
+
+// Scan all same-named instances: the name lookup may select the dormant
+// declaration instead of the spawned instance. An enabled corpse proves
+// materialization, but must not keep the wave alive until corpse removal.
+static int NameAlive(const char* name, int* seen) {
+    DWORD mgr = *(DWORD*)g_actorMgrPtr, rec;
+    if (!mgr) return 1;
+    __try { rec = *(DWORD*)(mgr + 0x1218); }
+    __except (EXCEPTION_EXECUTE_HANDLER) { return 1; }
+    int alive = 0, guard = 0x4000;
+    while (rec && --guard > 0) {
+        const char* nm = (const char*)(rec + 4);   // name is inline at +4
+        DWORD nxt = 0, enabled = 0;
+        __try { nxt = *(DWORD*)(rec + 0x148); enabled = *(DWORD*)(rec + ACT_ENABLED); }
+        __except (EXCEPTION_EXECUTE_HANDLER) { return 1; }
+        int match = 0;
+        __try { match = (*nm >= 0x20 && *nm < 0x7f) && !_stricmp(nm, name); }
+        __except (EXCEPTION_EXECUTE_HANDLER) { return 1; }
+        if (match && enabled == ACT_ENABLED_MAGIC) {
+            *seen = 1;
+            if (RecordAlive(rec)) alive = 1;
+        }
+        if (nxt == rec) return 1;
+        rec = nxt;
+    }
+    return rec ? 1 : alive;
+}
+
+static int ActorAlive(int i, int* seen) {
+    return NameAlive(g_spawned[i], seen);
+}
+
+// createActorGroup only enables records (0x4D9620); it cannot resurrect
+// an already-enabled corpse when the 40/8 actor pools wrap. Reuse the
+// native reinforcement respawn vmethod (+0x6C), exactly as CSpawner does
+// at 0x455CB5: thiscall(actor, position*, orientation*). Class overrides
+// restore health, AI and motion state; just changing HP is insufficient.
+static void RespawnReusedActor(const char* name) {
+    DWORD mgr = *(DWORD*)g_actorMgrPtr;
+    if (!mgr) return;
+    __try {
+        DWORD rec = *(DWORD*)(mgr + 0x1218);
+        int guard = 0x4000;
+        while (rec && --guard > 0) {
+            DWORD next = *(DWORD*)(rec + 0x148);
+            if (*(DWORD*)(rec + ACT_ENABLED) == ACT_ENABLED_MAGIC
+                    && !_stricmp((const char*)(rec + 4), name)) {
+                if (!RecordAlive(rec)) {
+                    float pos[3], orient[3];
+                    memcpy(pos, (void*)(rec + 0x24), sizeof(pos));
+                    memcpy(orient, (void*)(rec + 0x34), sizeof(orient));
+                    DWORD fn = *(DWORD*)(*(DWORD*)rec + 0x6C);
+                    __asm { lea eax, orient
+                            push eax
+                            lea eax, pos
+                            push eax
+                            mov ecx, rec
+                            call fn }
+                    // Generic monster respawn restores health/AI but
+                    // CSpawner supplies its starting motion separately.
+                    if (g_mode == 2) {
+                        const char* motion = !_strnicmp(name, "EliteS", 6)
+                                           ? "stand1" : "defaultstand1";
+                        DWORD model = rec + 0x348;
+                        fn = g_fnRespawnMotion;
+                        __asm { push 0
+                                push motion
+                                mov ecx, model
+                                call fn }
+                    }
+                    DiTrace("CHAL respawn %s rec=%08X t=%u\n", name, rec, GetTickCount());
+                }
+                return;
+            }
+            if (next == rec) return;
+            rec = next;
+        }
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        DiTrace("CHAL respawn fault %s\n", name);
+    }
 }
 
 // SoldierS<n> -> group "GS<n>", EliteS<n> -> "GE<n>", Boss<n> -> "GB<n>"
@@ -853,6 +930,7 @@ static const char* GrpFor(const char* n) {
 
 static void QueueSpawn(const char* name) {
     char b[64], wp[16];
+    RespawnReusedActor(name);
     // Native reinforcement vocabulary: createActorGroup materializes
     // the dormant actors of a group (requires the MSN "group" field).
     // setvictim($=hero) makes them hostile — spawned actors otherwise
@@ -862,6 +940,8 @@ static void QueueSpawn(const char* name) {
     else   { sprintf(b, "createActor(%s)", name);   QPush(b); }
     sprintf(wp, "WPS%d", (g_wpRot++ % N_WPS) + 1);
     sprintf(b, "warpTo(%s,%s)", name, wp);  QPush(b);
+    // setvictim resolves the MATERIALIZED instance by name — the declared
+    // record stays dormant forever, so this must ride the spawn queue.
     sprintf(b, "setvictim(%s,MainCharacter0)", name); QPush(b);
     if (g_nSpawned < SP_MAX) {
         strncpy(g_spawned[g_nSpawned], name, 31);
@@ -873,6 +953,8 @@ static void QueueSpawn(const char* name) {
 static void QueueWave(int w) {
     char n[24];
     g_nSpawned = 0;
+    g_seenActors = 0;
+    g_lastAlive = -1;
     int cnt = WaveSize(w), eli = WaveElites(w);
     int nelites = (g_mode >= 1) ? N_ELITES_BOSS : N_ELITES;
     for (int i = 0; i < cnt; ++i) {
@@ -886,8 +968,8 @@ static void QueueWave(int w) {
     // Boss Rush: every wave's own boss; Boss Battle: boss on the last wave.
     if (g_mode == 3) { sprintf(n, "Boss%d", min(w, 6)); QueueSpawn(n); }
     else if (g_mode >= 1 && w == NWAVES()) QueueSpawn("Boss1");
-    DiTrace("CHAL wave %d/%d queued (%d+%d actors, diff=%d mode=%d)\n",
-            w, NWAVES(), cnt, eli, g_diff, g_mode);
+    DiTrace("CHAL wave %d/%d queued (%d+%d actors, diff=%d mode=%d) t=%u\n",
+            w, NWAVES(), cnt, eli, g_diff, g_mode, GetTickCount());
 }
 
 // HUD text via the engine's own banner printer 0x4715c0 — the same call
@@ -895,10 +977,10 @@ static void QueueWave(int w) {
 //   thiscall/stdcall ecx=gameObj([0x62d6d0]), (text, dur, scale, font)
 // Copies text into gameObj+0x1FB4, duration into +0x20B4 (-1 = auto
 // from strlen), scale into +0x20B8, font into +0x20BC. ret 0x10.
-static void ShowHud(const char* text) {
+static void ShowHud(const char* text, float dur = -1.0f) {
     DWORD go = *(DWORD*)RVA(0x62d6d0), fn = RVA(0x4715c0);
     if (!go || !text || !*text) return;
-    float dur = -1.0f, sc = 0.9f;
+    float sc = 0.9f;
     DWORD font = 0;
     __try {
         __asm {
@@ -925,7 +1007,7 @@ static void RecordTime(DWORD ms) {
     {
         char b[64];
         sprintf(b, "COMPLETADO!  %u:%02u", ms / 60000, (ms / 1000) % 60);
-        ShowHud(b);
+        ShowHud(b, RESULT_MS / 1000.0f);
     }
     DiTrace("CHAL finished mode=%d diff=%d time=%.1fs best=%.1fs\n",
             g_mode, g_diff, ms / 1000.0, best / 1000.0);
@@ -934,6 +1016,7 @@ static void RecordTime(DWORD ms) {
 // Runs once per idle fetch (~once per frame) while the challenge is active.
 // The wave state machine never counts deaths while the spawn queue is still
 // draining — that race is what made earlier builds flood the arena.
+// Timers use milliseconds, independent of script-fetch frequency / FPS.
 static void WaveTick() {
     // Mission buffer must still match the armed arena — cancels if the
     // player left for another mission/menu.
@@ -970,6 +1053,12 @@ static void WaveTick() {
                         ho ? *(float*)((BYTE*)ho + 0x5034) : -1.0f);
             }
         } __except (EXCEPTION_EXECUTE_HANDLER) {}
+    DWORD now = GetTickCount();
+    int alive = 0, aliveIdx[SP_MAX];
+    if (g_wstate >= 1 && g_wstate <= 3) {
+        for (int i = 0; i < g_nSpawned; ++i)
+            if (ActorAlive(i, &g_seenActors)) aliveIdx[alive++] = i;
+    }
     switch (g_wstate) {
     case 0:                                   // arm: hero warp + wave 1
         // Wait for the hero to actually spawn. heroGlobA points at the
@@ -991,11 +1080,11 @@ static void WaveTick() {
         g_t0 = GetTickCount();
         return;
     case 1:                                   // spawning: wait queue drain
-        if (QEmpty()) { g_wstate = 2; g_settle = 120; }
+        if (QEmpty()) { g_wstate = 2; g_stateSince = now; }
         return;
     case 2:                                   // settle: let spawns materialize
-        if (--g_settle <= 0) {
-            g_wstate = 3; g_seenAlive = 0; g_stallGuard = 3600;
+        if (now - g_stateSince >= SPAWN_SETTLE_MS) {
+            g_wstate = 3;
             {
                 char b[48];
                 if (g_diff == 3) sprintf(b, "OLEADA %d", g_wave);
@@ -1011,7 +1100,7 @@ static void WaveTick() {
                 for (int i = 0; i < 4; ++i) {
                     DWORD a = FindActor(C[i]);
                     if (!a) { DiTrace("  ctrl %s rec=NULL\n", C[i]); continue; }
-                    DWORD d4 = 0; __try { d4 = *(DWORD*)(a + ACT_PING); } __except (EXCEPTION_EXECUTE_HANDLER) {}
+                    DWORD d4 = 0; __try { d4 = *(DWORD*)(a + ACT_ENABLED); } __except (EXCEPTION_EXECUTE_HANDLER) {}
                     DWORD r = 0xFFFFFFFF;
                     __try {
                         DWORD vt = *(DWORD*)a, fn = *(DWORD*)(vt + 0xd8);
@@ -1025,15 +1114,24 @@ static void WaveTick() {
         }
         return;
     case 3: {                                 // fight: count live actors
-        int alive = 0, aliveIdx[SP_MAX];
-        for (int i = 0; i < g_nSpawned; ++i)
-            if (ActorAlive(i)) aliveIdx[alive++] = i;
+        if (alive != g_lastAlive) {
+            DiTrace("CHAL wave %d alive=%d t=%u\n", g_wave, alive, now);
+        }
         if (alive) {
-            if (!g_seenAlive)
-                DiTrace("CHAL wave %d alive=%d\n", g_wave, alive);
-            g_seenAlive = 1;
+            if (g_lastAlive < 0) {
+                // Victims only once actors are confirmed alive — issuing
+                // setvictim during materialization can hit a record that
+                // does not exist yet and halts the script on an error
+                // dialog.
+                for (int i = 0; i < alive; ++i) {
+                    char vb[64];
+                    sprintf(vb, "setvictim(%s,MainCharacter0)", g_spawned[aliveIdx[i]]);
+                    QPush(vb);
+                }
+            }
+            g_lastAlive = alive;
             // Test hook (ini [Challenge] Autokill=1): bleeds one live actor
-            // every ~1.5s so wave progression can be verified unattended.
+            // so wave progression can be verified unattended.
             // Never enabled for real play.
             if (g_autokill) {
                 static DWORD lastAl;
@@ -1055,12 +1153,21 @@ static void WaveTick() {
             }
             return;
         }
-        if (!g_seenAlive && --g_stallGuard > 0) return;
-        if (!g_seenAlive)
-            DiTrace("CHAL wave %d stall (no live actors seen)\n", g_wave);
-        if (g_wave >= NWAVES()) {
-            RecordTime(GetTickCount() - g_t0);
+        g_lastAlive = alive;
+        if (!g_seenActors) {
+            if (now - g_stateSince < SPAWN_TIMEOUT_MS) return;
+            // A spawn failure is not a victory; do not skip waves or save
+            // a bogus best time after the former 3600-script-tick wait.
+            DiTrace("CHAL wave %d spawn failed t=%u\n", g_wave, now);
+            ShowHud("ERROR: NO APARECEN ENEMIGOS");
             g_wstate = 4;
+            return;
+        }
+        DiTrace("CHAL wave %d cleared t=%u\n", g_wave, now);
+        if (g_diff != 3 && g_wave >= NWAVES()) {
+            RecordTime(GetTickCount() - g_t0);
+            g_stateSince = now;
+            g_wstate = 6;
             return;
         }
         // Endless Horde: persist waves survived as the record.
@@ -1071,11 +1178,26 @@ static void WaveTick() {
                 WritePrivateProfileStringA("Challenge", "BestWaves", b, INI_FILE);
             }
         }
+        g_stateSince = now;
+        g_wstate = 5;
+        DiTrace("CHAL next wave in %u ms\n", WAVE_GAP_MS);
+        return;
+    }
+    case 5:                                   // real-time intermission
+        if (now - g_stateSince < WAVE_GAP_MS) return;
         ++g_wave;
         QueueWave(g_wave);
         g_wstate = 1;
         return;
-    }
+    case 6:                                   // result, then native game end
+        if (now - g_stateSince < RESULT_MS) return;
+        // Same successful-ending event as DE_C3BOSSROOM's victorySub.
+        // Our queue commands bypass NeuterCmd (which suppresses raise).
+        // Keep the challenge armed until the command executes via mailbox.
+        QPush("raise(gameOver)");
+        g_wstate = 4;
+        DiTrace("CHAL ending mode=%d diff=%d t=%u\n", g_mode, g_diff, now);
+        return;
     }
 }
 
@@ -1637,6 +1759,7 @@ static DWORD WINAPI Worker(LPVOID) {
     g_missionName = RVA(G_MISSION_NAME);
     g_fnFindActor = RVA(FN_FIND_ACTOR);
     g_actorMgrPtr = RVA(G_ACTOR_MGR);
+    g_fnRespawnMotion = RVA(0x4DBE00);
     g_retCmdFetch= RVA(RET_CMD_FETCH);
     g_retCmdFetchReplay = RVA(RET_CMD_REPLAY);
     g_cmdModePtr = RVA(G_CMD_MODE);
