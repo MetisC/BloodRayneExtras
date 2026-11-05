@@ -878,11 +878,13 @@ static void WaveTick() {
             if (ActorAlive(i, &g_seenActors)) aliveIdx[alive++] = i;
     }
     switch (g_wstate) {
-    case 0:                                   // arm: hero warp + wave 1
+    case 0:                                   // arm: wave 1
         // Wait for the hero to actually spawn — record+0x64 is 0 until
-        // the CHeroPlaceholder instantiates the actor.
+        // the CHeroPlaceholder instantiates the actor. No warp: the hero
+        // stays at the placeholder position so a normal start and a
+        // pause-menu restart land on the exact same spot (the former
+        // WPHero warp sat right next to a column).
         if (!HeroSpawned()) return;
-        QPush("warpTo(MainCharacter0,WPHero)");
         g_soldierRot = g_eliteRot = g_wpRot = 0;
         g_wave = 1;
         QueueWave(1);
