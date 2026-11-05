@@ -122,6 +122,7 @@ static DWORD g_retMissionGo, g_missionName, g_fnFindActor, g_actorMgrPtr;
 static DWORD g_fnRespawnMotion, g_retHeroType;
 static DWORD g_htVal;             // SkinHeroType() result for the spawn hook
 static int   g_skinPending;       // hero spawned with our skin — restore +0x9a0 to 1
+static DWORD g_heroSpawnAt;       // deadline: hero instantiated very recently
 static int   g_replay;
 
 typedef const char* (__cdecl *Localize_t)(const char*);
@@ -851,6 +852,26 @@ static void WaveTick() {
             }
         } __except (EXCEPTION_EXECUTE_HANDLER) {}
     DWORD now = GetTickCount();
+    // "Restart level" from the pause menu may respawn the hero without
+    // re-running any slot-0, so the arm check above never fires — but the
+    // hero-spawn hook marks the load anyway. A wave in progress when the
+    // hero re-instantiates means the mission reloaded: re-arm from wave 1.
+    // (Skipped while wstate==0: on a normal load the hero spawns AFTER the
+    // slot-0 arm, and resetting here would wipe the fresh powers queue.)
+    if (g_heroSpawnAt) {
+        if (g_wstate != 0 && (int)(now - (DWORD)g_heroSpawnAt) < 0) {
+            g_wstate = 0;
+            memset(g_done, 0, sizeof(g_done));
+            for (int i = 0; i < 16; ++i) g_saved[i].entry = NULL;
+            for (int i = 0; i < 12; ++i) g_mbox[i].entry = NULL;
+            g_qHead = g_qTail = 0;
+            if (g_powers)
+                for (int i = 0; i < N_INJ; ++i) QPush(g_inj[i]);
+            DiTrace("CHAL rearm on fresh hero t=%u\n", now);
+        }
+        g_heroSpawnAt = 0;
+        return;
+    }
     int alive = 0, aliveIdx[SP_MAX];
     if (g_wstate >= 1 && g_wstate <= 3) {
         for (int i = 0; i < g_nSpawned; ++i)
@@ -1120,10 +1141,17 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     // back to the menu and started a campaign act) drops the stale
     // challenge state.
     if (idx == 0 && mode == 0 && !again) {
-        // Player skin is applied by the HookHeroType detour inside
-        // CHeroPlaceholder::Update — nothing to do here.
+        // A hero instantiated in the last 1.5 s also counts as a fresh
+        // load — on "restart level" the placeholder runs BEFORE the first
+        // slot-0 fetch, so HeroSpawned() is already true there and the
+        // !HeroSpawned() check alone never re-arms (the wave counter just
+        // kept climbing on each restart). Consumed on read: only the
+        // first slot-0 after a spawn sees it.
+        int freshHero = g_heroSpawnAt &&
+                        (int)(GetTickCount() - (DWORD)g_heroSpawnAt) < 0;
+        g_heroSpawnAt = 0;
         if (g_challenge == 1 ||
-            (g_challenge == 2 && !HeroSpawned())) {
+            (g_challenge == 2 && (!HeroSpawned() || freshHero))) {
             const char* want = g_mode == 2 ? MSN_MONSTER
                              : g_mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE;
             if (_strnicmp((char*)g_missionName, want, strlen(want))) {
@@ -1347,6 +1375,9 @@ static void __declspec(naked) HookHeroType() {
         pushad
         call SkinHeroType
         mov g_htVal, eax
+        call GetTickCount               // mark "hero just spawned" for the
+        add eax, 1500                   // arm logic — fires on every load,
+        mov g_heroSpawnAt, eax          // including pause-menu restart level
         popad
         mov ecx, g_htVal
         test ecx, ecx

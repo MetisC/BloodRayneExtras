@@ -218,6 +218,18 @@ int main() {
     testNow += WAVE_GAP_MS; WaveTick();
     assert(g_wave == 1000 && g_wstate == 1 && recordWrites == 1);
     puts("PASS: endless horde passes wave 999 without finishing");
+    // Pause-menu "restart level": the hero re-instantiates mid-wave and
+    // every actor goes dormant. Without the fresh-hero re-arm the engine
+    // counted that as a cleared wave and bumped the counter each restart.
+    Reset(); WaveTick(); EnterFight();
+    g_wave = 4;
+    for (int i = 0; i < actorCount; ++i) actors[i].data[0x150 / 4] = 2;
+    g_heroSpawnAt = testNow + 1500;
+    WaveTick();                              // fresh-hero re-arm fires
+    assert(g_wstate == 0 && g_heroSpawnAt == 0 && QEmpty());
+    WaveTick();                              // case 0: hero is up -> wave 1
+    assert(g_wstate == 1 && g_wave == 1);
+    puts("PASS: restart level mid-wave re-arms to wave 1");
     Reset(); WaveTick(); EnterFight();
     strcpy(mission, "training.msn"); WaveTick();
     assert(g_challenge == 0 && QEmpty() && recordWrites == 0);
