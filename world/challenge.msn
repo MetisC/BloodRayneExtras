@@ -196,7 +196,7 @@ CGun "GunFloor4"
 	0    // index
 	"Hero"    // heroName
 	0
-	2    // heroType
+	1    // heroType
 } CHeroPlaceholder "HeroPlaceholder0"
 { CBarrier "Barrier0"
 	0,308.7,20,339.78    // location

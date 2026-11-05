@@ -6,7 +6,7 @@
 #   Boss6 the Act-1 Queen (CQueen). EliteS7/8 stay dormant reserves.
 import re, sys
 
-BASE = r"H:\GOG\BloodRayne Terminal Cut\world\bossbattle.msn"
+BASE = r"H:\GOG\BloodRayne Terminal Cut\world\challenge.msn"
 DST  = r"H:\GOG\BloodRayne Terminal Cut\world\bossrush.msn"
 MENTOR = r"H:\GOG\BloodRayne Terminal Cut\MODDING\extracted\b1_orig_world\WORLD\DE_C2START.MSN"
 QUEEN  = r"H:\GOG\BloodRayne Terminal Cut\MODDING\extracted\b1_orig_world\WORLD\LA_SWAMP.MSN"
@@ -31,9 +31,13 @@ def prep(b, cls, old, new, loc, group, hp=None, hero=None):
     return b
 
 txt = open(BASE, encoding="latin-1").read()
-txt = txt.replace("\nbossbattle\n", "\nbossrush\n", 1)
+txt = txt.replace("\nchallenge\n", "\nbossrush\n", 1)
 
-barrock = get_block(BASE, "CSoldier", "Boss1")
+# Boss1 (Barrock) is built from the dormant-reserve EliteS8 block itself:
+# same CSoldier record, model swapped to NAZI_BARROCK.DFM.
+barrock = get_block(BASE, "CSoldier", "EliteS8")
+barrock = re.sub(r'"[^"]*"(    // modelName)', '"NAZI_BARROCK.DFM"\g<1>',
+                 barrock, count=1)
 mentor  = get_block(MENTOR, "CMainCharacter", "MentorBoss0")
 queen   = get_block(QUEEN, "CQueen", "Queen")
 
@@ -65,25 +69,21 @@ for i in range(1, 7):
     cls = specs[i - 1][1]
     txt = txt.replace('CSoldier "EliteS%d"' % i, '%s "Boss%d"' % (cls, i))
 
-# The old Boss1 (ex-EliteS8) is still in the file as a SECOND CSoldier
-# "Boss1" block + decl — drop the last occurrence of each.
-def drop_last(cls_name):
-    global txt
-    # block: last `{ CLS "Boss1" ... } CLS "Boss1"`
-    pats = list(re.finditer(r'\{ %s "Boss1"\n.*?\} %s "Boss1"' % (cls_name, cls_name), txt, re.S))
-    if len(pats) > 1:
-        m = pats[-1]; txt = txt[:m.start()] + txt[m.end():]
-    # decl: last `CLS "Boss1"` line at column 0
-    pats = list(re.finditer(r'(?m)^%s "Boss1"\n' % cls_name, txt))
-    if len(pats) > 1:
-        m = pats[-1]; txt = txt[:m.start()] + txt[m.end():]
-drop_last("CSoldier")
-
 # EliteS1-6 no longer exist — their GunE1-6 would dangle. Remove the six
 # gun blocks and their decls entirely.
 for i in range(1, 7):
     txt = re.sub(r'\{ CGun "GunE%d"\n.*?\} CGun "GunE%d"\n' % (i, i), '', txt, flags=re.S)
     txt = re.sub(r'(?m)^CGun "GunE%d"\n' % i, '', txt)
+
+# Boss1 keeps a weapon: clone the reserve EliteS8's gun as GunB1 carried
+# by Boss1 (EliteS8 stays dormant and keeps its own GunE8).
+gunb = get_block(BASE, "CGun", "GunE8")
+gunb = (gunb.replace('"GunE8"', '"GunB1"')
+            .replace('"EliteS8"', '"Boss1"')
+            .replace('"GE8"', '"GB1"'))
+m = re.search(r'\{ CGun "GunE8"\n.*?\} CGun "GunE8"\n', txt, re.S)
+txt = txt[:m.end()] + gunb + "\n" + txt[m.end():]
+txt = re.sub(r'(?m)^CGun "GunE8"$', 'CGun "GunE8"\nCGun "GunB1"', txt, count=1)
 
 # Header actor count must match the real decl list — recount it.
 ndecl = len(re.findall(r'(?m)^[A-Za-z0-9_]+ "[^"]+"\s*$', txt))
@@ -92,5 +92,5 @@ txt = re.sub(r'(// actor count\n)\d+', r'\g<1>%d' % ndecl, txt, count=1)
 open(DST, "w", encoding="latin-1").write(txt)
 print("wrote", DST)
 for k in ('"Boss1"','"Boss2"','"Boss3"','"Boss4"','"Boss5"','"Boss6"',
-          "CMainCharacter", "CQueen"):
+          '"GunB1"', "CMainCharacter", "CQueen"):
     print(k, txt.count(k))

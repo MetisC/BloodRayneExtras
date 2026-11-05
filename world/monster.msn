@@ -63,7 +63,7 @@ CBarrier 2
 CAmmo 1
 CDemonActor 14
 // actor count
-120
+119
 // actor name list
 CHeroPlaceholder "HeroPlaceholder0"
 CBarrier "Barrier0"
@@ -180,7 +180,6 @@ CGun "GunE6"
 CMutate "EliteS7"
 CGun "GunE7"
 CQueen "Boss1"
-CGun "GunE8"
 CGun "GunFloor1"
 CGun "GunFloor2"
 CGun "GunFloor3"
@@ -4200,27 +4199,6 @@ CGun "GunFloor4"
 	1    // aggression
 	0.5    // valor
 } CQueen "Boss1"
-{ CGun "GunE8"
-	0,222.287,0.0,361.000    // location
-	0,0,0    // orient
-	0    // enabled
-	"GE8"    // group
-	0    // selfIlluminated
-	0    // attachCount
-	"MG42.SMF"    // modelName
-	"EliteS8"		// carriedByActor
-	0    // weaponState
-	50    // ammoCount
-	11    // ammoType
-	0    // simTimer
-	13    // fireRate
-	50    // minDamage
-	90    // maxDamage
-	0    // canAttachLight
-	200    // effectiveRange
-	12    // gunType
-	0    // isCustomGun
-} CGun "GunE8"
 { CGun "GunFloor1"
 	0,245,0,340    // location
 	0,0,0    // orient

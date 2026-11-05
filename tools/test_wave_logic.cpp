@@ -70,7 +70,7 @@ static void Reset(int mode = 0, int diff = 0) {
     g_stateSince = 0;
     recordWrites = 0; recordKey[0] = 0;
     actorCount = respawns = motionResets = 0;
-    strcpy(mission, mode == 1 ? MSN_BOSSBATTLE : mode == 2 ? MSN_MONSTER
+    strcpy(mission, mode == 2 ? MSN_MONSTER
                     : mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE);
     LinkActors(0);
 }
@@ -169,11 +169,11 @@ int main() {
     ++testNow; WaveTick(); assert(g_wave == 2);
     puts("PASS: clock wraparound");
 
-    const int modes[] = { 0, 0, 0, 1, 2, 3, 0 };
-    const int diffs[] = { 0, 1, 2, 0, 0, 0, 3 };
-    const char* keys[] = { "BestTime", "BestTime", "BestTime", "BestBoss",
+    const int modes[] = { 0, 0, 0, 2, 3, 0 };
+    const int diffs[] = { 0, 1, 2, 0, 0, 3 };
+    const char* keys[] = { "BestTime", "BestTime", "BestTime",
                            "BestMonster", "BestRush", "BestWaves" };
-    for (int run = 0; run < 7; ++run) {
+    for (int run = 0; run < 6; ++run) {
         Reset(modes[run], diffs[run]); WaveTick();
         int limit = g_diff == 3 ? 45 : NWAVES();  // cycles soldier/elite pools
         for (int w = 1; w <= limit; ++w) {

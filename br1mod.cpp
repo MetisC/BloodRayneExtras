@@ -82,8 +82,6 @@
 #define ACTION_CH_N     0x161   // Challenge Combat: Normal
 #define ACTION_CH_H     0x162   // Challenge Combat: Hard
 #define ACTION_CH_E     0x163   // Challenge Combat: Extreme
-#define ACTION_CH_B     0x164   // Boss Battle
-#define ACTION_BOSSSEL  0x165   // boss-appearance cycler
 #define ACTION_MONSTER  0x166   // Monster Mash arena
 #define ACTION_BOSSRUSH 0x167   // Boss Rush arena
 #define ACTION_INFINITE 0x168   // endless horde (record = waves)
@@ -91,7 +89,6 @@
 
 #define INI_FILE       ".\\br1mod.ini"
 #define MSN_CHALLENGE  "challenge.msn"
-#define MSN_BOSSBATTLE "bossbattle.msn"
 #define MSN_MONSTER    "monster.msn"
 #define MSN_BOSSRUSH   "bossrush.msn"
 
@@ -99,9 +96,7 @@
 static DWORD g_exeBase = 0;
 static int   g_powers = 0;
 static char  g_label[160];
-static char  g_labelS[7][160];
-static char  g_labelB[160];
-static char  g_labelM[160];
+static char  g_labelS[6][160];
 static char  g_labelK[160];
 static BYTE  g_progOrig = 0xFF;
 static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-level
@@ -153,15 +148,13 @@ static const char* LABEL_POWERS[6] = {
     "\x82\xB7\x82\xD7\x82\xC4\x82\xCC\x83\x70\x83\x8F\x81\x5B\x82\xC6\x83\x52\x83\x93\x83\x7B", // JA "すべてのパワーとコンボ"
 };
 
-static const char* LABEL_CH[7][6] = {
+static const char* LABEL_CH[6][6] = {
     { "Challenge Combat: Normal", "Desaf\xEDo: Normal", "Challenge Combat: Normal",
       "Challenge Combat: Normal", "Challenge Combat: Normal", "Challenge Combat: Normal" },
     { "Challenge Combat: Hard", "Desaf\xEDo: Dif\xED""cil", "Challenge Combat: Hard",
       "Challenge Combat: Hard", "Challenge Combat: Hard", "Challenge Combat: Hard" },
     { "Challenge Combat: Extreme", "Desaf\xEDo: Extremo", "Challenge Combat: Extreme",
       "Challenge Combat: Extreme", "Challenge Combat: Extreme", "Challenge Combat: Extreme" },
-    { "Boss Battle", "Batalla con el jefe", "Boss Battle",
-      "Boss Battle", "Boss Battle", "Boss Battle" },
     { "Monster Mash", "Mar de monstruos", "Monster Mash",
       "Monster Mash", "Monster Mash", "Monster Mash" },
     { "Boss Rush", "Racha de jefes", "Boss Rush",
@@ -170,24 +163,15 @@ static const char* LABEL_CH[7][6] = {
       "Endless Horde", "Endless Horde", "Endless Horde" },
 };
 
-static const char* LABEL_BSEL[6] = {
-    "Boss", "Jefe", "Boss", "Boss", "Boss", "Boss",
-};
-
-static const char* LABEL_SKIN[6] = {
-    "Appearance", "Apariencia", "Apparence", "Aspetto", "Appearance", "Appearance",
-};
-
-// Boss Battle appearance cycler: "" = native NAZI_BARROCK.
-static const char* BOSS_OPTS[] = {
-    "", "Mynce", "Butcheress", "Rayne", "RayneLA",
-    "NAZI_BARROCK.DFM", "BUTCHERESS.DFM", NULL
-};
-
 // Player-skin cycler: name -> heroType written into CHeroPlaceholder.
 // RayneLA (heroType 4) is out — it renders the stock Rayne model.
 static const char* SKIN_OPTS[] = { "Rayne", "Mynce", "Butcheress", NULL };
 static const int   SKIN_HTS[]  = { 1, 2, 3 };
+
+static const char* LABEL_SKIN[6] = {
+    "Appearance", "Apariencia", "Apparence",
+    "Aspetto", "Appearance", "Appearance",
+};
 
 static const char* ModLocalize(const char* key) {
     const char* t = Localize(key);
@@ -208,42 +192,14 @@ static void ComposeLabelS(int d) {
     const char* lbl = ModLocalize(LABEL_CH[d][g_lang]);
     // One shared best time per mode — shown on every row of that mode.
     DWORD best = GetPrivateProfileIntA("Challenge",
-                                       d == 3 ? "BestBoss" : d == 4 ? "BestMonster"
-                                            : d == 5 ? "BestRush" : d == 6 ? "BestWaves"
-                                            : "BestTime",
+                                       d == 3 ? "BestMonster" : d == 4 ? "BestRush"
+                                            : d == 5 ? "BestWaves" : "BestTime",
                                        0, INI_FILE);
     if (best)
-        sprintf(g_labelS[d], d == 6 ? "%s - %u" : "%s - %u:%02u",
-                lbl, d == 6 ? best : best / 60000, (best / 1000) % 60);
+        sprintf(g_labelS[d], d == 5 ? "%s - %u" : "%s - %u:%02u",
+                lbl, d == 5 ? best : best / 60000, (best / 1000) % 60);
     else
         sprintf(g_labelS[d], "%s", lbl);
-}
-
-// Boss-appearance cycler row: shows current [Appearance] Boss value.
-static void ComposeLabelB() {
-    if (!g_langDetected) DetectLang();
-    char cur[64] = "";
-    GetPrivateProfileStringA("Appearance", "Boss", "", cur, sizeof(cur), INI_FILE);
-    const char* name = cur[0] ? cur : "Barrock";
-    if (!_stricmp(name, "NAZI_BARROCK.DFM")) name = "Barrock";
-    // strip .DFM for display
-    char disp[64]; strcpy(disp, name);
-    char* d = strstr(disp, ".DFM"); if (d) *d = 0;
-    sprintf(g_labelB, "%s: %s", ModLocalize(LABEL_BSEL[g_lang]), disp);
-}
-
-static void CycleBoss() {
-    char cur[64] = "";
-    GetPrivateProfileStringA("Appearance", "Boss", "", cur, sizeof(cur), INI_FILE);
-    int idx = 0;
-    for (int i = 0; BOSS_OPTS[i]; i++)
-        if (!stricmp(BOSS_OPTS[i], cur)) { idx = i; break; }
-    idx++; if (!BOSS_OPTS[idx]) idx = 0;
-    // "Barrock" (empty slot) must write the real model, not blank the key:
-    // an empty key never reaches MsnBossBlock, leaving a stale hero-class
-    // Boss1 in the file from a previous selection.
-    const char* val = BOSS_OPTS[idx][0] ? BOSS_OPTS[idx] : "NAZI_BARROCK.DFM";
-    WritePrivateProfileStringA("Appearance", "Boss", val, INI_FILE);
 }
 
 // Player-skin cycler row: shows/cycles [Appearance] Skin (hero model).
@@ -274,15 +230,7 @@ static void CycleSkin() {
 // [Appearance] ini section before the engine loads it. Class compatibility
 // (from the native MSN corpus): CSoldier models share the soldier skeleton
 // (SOLDIER, SS_SOLDIER, SS_OFFICER, GGG_OFFICER, GGG_ELITE, GGG_HAZMAT,
-// GGG_JETPACK, STALKER, ARGSLAVE, ARGSLAVESHIRT, NAZI_BARROCK); the boss may
-// additionally become a CNPC actor with an NPC-skeleton model (BUTCHERESS,
-// KRISTINE, KAZI, GMONEY, HICKS, OLDMAN, BATMITE, RAYNE) via BossClass=CNPC.
-static const char* NPC_MODELS[] = {
-    "BUTCHERESS.DFM", "KRISTINE.DFM", "KAZI.DFM", "GMONEY.DFM",
-    "HICKS.DFM", "OLDMAN.DFM", "BATMITE.DFM", "RAYNE.DFM",
-    "VAMPETTE.DFM", "VAMP.DFM", NULL
-};
-
+// GGG_JETPACK, STALKER, ARGSLAVE, ARGSLAVESHIRT, NAZI_BARROCK).
 // Rewrite "// modelName" values inside blocks whose actor name starts with
 // a prefix. Blocks look like:  { CClass "Name" ... "MODEL"    // modelName }
 static int MsnSwap(char* txt, const char* namePat, const char* model) {
@@ -317,195 +265,6 @@ static int MsnSwap(char* txt, const char* namePat, const char* model) {
     return n;
 }
 
-// Set the class token on Boss1's declaration-list line. The decl line is
-// the FIRST "Boss1" mention in the file:  <indent>ClassName "Boss1"
-static void MsnSetBossDecl(char* txt, const char* newCls) {
-    char* d0 = strstr(txt, "\"Boss1\"");
-    if (!d0) return;
-    // find the class token = last non-space run before the quote on the line
-    char* ls = d0;
-    while (ls > txt && ls[-1] != '\n') --ls;
-    char* ce = ls;
-    while (ce < d0 && *ce != ' ' && *ce != '\t') ++ce;
-    char old[48];
-    int olen = ce - ls;
-    if (olen <= 0 || olen >= 48) return;
-    memcpy(old, ls, olen); old[olen] = 0;
-    int nlen = strlen(newCls);
-    // splice: [ls..ce) -> newCls
-    memmove(ls + nlen, ce, strlen(ce) + 1);
-    memcpy(ls, newCls, nlen);
-}
-
-// Rewrite the whole "{ <anything> \"Boss1\" ... } Class \"Boss1\"" block
-// with a provided template, fixing the declaration line too.
-// kind: 0=CSoldier(model), 1=CNPC(model), 2=CMainCharacter(heroType)
-static int MsnBossBlock(char* txt, int kind, const char* arg) {
-    static const char* CLSS[] = { "CSoldier", "CNPC", "CMainCharacter" };
-    MsnSetBossDecl(txt, CLSS[kind]);
-    char* start = strstr(txt, "{ CSoldier \"Boss1\"");
-    if (!start) start = strstr(txt, "{ CNPC \"Boss1\"");
-    if (!start) start = strstr(txt, "{ CMainCharacter \"Boss1\"");
-    if (!start) return 0;
-    char* end = strstr(start, "} C");
-    if (!end) return 0;
-    end = strchr(end, '\n');
-    if (!end) return 0;
-    ++end;
-    char blk[4096];
-    if (kind == 2) {
-        // Dhampir boss: CMainCharacter with heroType. Field layout mirrors
-        // the native MentorBoss0 block (DE_C2START.MSN). arg = heroType num.
-        int ht = atoi(arg);
-        sprintf(blk,
-            "{ CMainCharacter \"Boss1\"\n"
-            "\t0,222.287,0.0,361.000    // location\n"
-            "\t0,0,0    // orient\n"
-            "\t0    // enabled\n"
-            "\t\"GB1\"    // group\n"
-            "\t0    // selfIlluminated\n"
-            "\t0    // attachCount\n"
-            "\t1200    // hitPoints\n"
-            "\t0    // numCarryHands\n"
-            "\t{ // clothList\n"
-            "\t\t0 // clothCount\n"
-            "\t}\n"
-            "\t1    // sizeScale\n"
-            "\t1200    // maxHitPoints\n"
-            "\t0    // spectralFlag\n"
-            "\t0    // invulnerableFlag\n"
-            "\t0    // etheralFlag\n"
-            "\t\"(none)\"\t\t// scriptWalkDest\n"
-            "\t3    // scriptWalkDist\n"
-            "\t1e+030    // scriptRunDist\n"
-            "\t-1    // scriptWalkTimer\n"
-            "\t0    // scriptWalkState\n"
-            "\t\"(none)\"\t\t// scriptDoorToOpen\n"
-            "\t\"(none)\"\t\t// whoIsControllingMe\n"
-            "\t1    // canInfest\n"
-            "\t{ // motion state\n"
-            "\t\t\"standalert\",0 // current motion name, curFrameNumber\n"
-            "\t}\n"
-            "\t{ // partStatus\n"
-            "\t\t23\n"
-            "\t\t1 0 0 1 1 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 \n"
-            "\t}\n"
-            "\t458848    // controlType\n"
-            "\t%d    // heroType\n"
-            "} CMainCharacter \"Boss1\"\n", ht);
-    } else if (kind == 1) {
-        sprintf(blk,
-            "{ CNPC \"Boss1\"\n"
-            "\t0,222.287,0.0,361.000    // location\n"
-            "\t0,0,0    // orient\n"
-            "\t0    // enabled\n"
-            "\t\"GB1\"    // group\n"
-            "\t0    // selfIlluminated\n"
-            "\t0    // attachCount\n"
-            "\t1200    // hitPoints\n"
-            "\t0    // numCarryHands\n"
-            "\t{ // clothList\n"
-            "\t\t0 // clothCount\n"
-            "\t}\n"
-            "\t1.15    // sizeScale\n"
-            "\t1200    // maxHitPoints\n"
-            "\t0    // spectralFlag\n"
-            "\t0    // invulnerableFlag\n"
-            "\t0    // etheralFlag\n"
-            "\t\"(none)\"\t\t// scriptWalkDest\n"
-            "\t3    // scriptWalkDist\n"
-            "\t1e+030    // scriptRunDist\n"
-            "\t-1    // scriptWalkTimer\n"
-            "\t0    // scriptWalkState\n"
-            "\t\"(none)\"\t\t// scriptDoorToOpen\n"
-            "\t\"(none)\"\t\t// whoIsControllingMe\n"
-            "\t1    // canInfest\n"
-            "\t0.9    // speed\n"
-            "\t\"%s\"    // modelName\n"
-            "\t{ // motion state\n"
-            "\t\t\"standambient\",0 // current motion name, curFrameNumber\n"
-            "\t}\n"
-            "\t0    // postMode\n"
-            "\t\"(none)\"\t\t// ourPost\n"
-            "\t0    // holdPosFlag\n"
-            "\t\"none\"    // holdPosCond\n"
-            "} CNPC \"Boss1\"\n", arg);
-    } else {
-        // restore the CSoldier template (mirrors gen_boss.py output)
-        sprintf(blk,
-            "{ CSoldier \"Boss1\"\n"
-            "\t0,222.287,0.0,361.000    // location\n"
-            "\t0,0,0    // orient\n"
-            "\t0    // enabled\n"
-            "\t\"GB1\"    // group\n"
-            "\t0    // selfIlluminated\n"
-            "\t0    // attachCount\n"
-            "\t1200    // hitPoints\n"
-            "\t1    // numCarryHands\n"
-            "\t1    // carry hand\n"
-            "\t\"GunB1\"\t\t// carry actor\n"
-            "\t0.307564,-0.132776,0.130445    // carry pos\n"
-            "\t0.0158968,1.42652,1.55902    // carry orient\n"
-            "\t{ // clothList\n"
-            "\t\t0 // clothCount\n"
-            "\t}\n"
-            "\t1    // sizeScale\n"
-            "\t1200    // maxHitPoints\n"
-            "\t0    // spectralFlag\n"
-            "\t0    // invulnerableFlag\n"
-            "\t0    // etheralFlag\n"
-            "\t\"(none)\"\t\t// scriptWalkDest\n"
-            "\t3    // scriptWalkDist\n"
-            "\t1e+030    // scriptRunDist\n"
-            "\t-1    // scriptWalkTimer\n"
-            "\t0    // scriptWalkState\n"
-            "\t\"(none)\"\t\t// scriptDoorToOpen\n"
-            "\t\"(none)\"\t\t// whoIsControllingMe\n"
-            "\t1    // canInfest\n"
-            "\t0.99122    // speed\n"
-            "\t0    // poolMe\n"
-            "\t1    // randomizeMe\n"
-            "\t\"(none)\"\t\t// scriptVictim\n"
-            "\t\"\"    // patrolNamePattern\n"
-            "\t200    // guardDistance\n"
-            "\t150    // victimHeight\n"
-            "\t\"(none)\"\t\t// victim\n"
-            "\t10    // smellDist\n"
-            "\t1    // loquaciousness\n"
-            "\t0.914121    // evasiveness\n"
-            "\t0.77485    // courage\n"
-            "\t0.57181    // loyalty\n"
-            "\t0.627583    // marksmanship\n"
-            "\t0.5    // awareness\n"
-            "\t0.5    // perception\n"
-            "\t\"(none)\"\t\t// ourPost\n"
-            "\t0.732719    // intelligence\n"
-            "\t0.716666    // aggression\n"
-            "\t0.686956    // valor\n"
-            "\t0    // postModeFlag\n"
-            "\t\"none\"    // postModeCond\n"
-            "\t0    // holdPosFlag\n"
-            "\t\"none\"    // holdPosCond\n"
-            "\t-1    // largestPatrolPointIndex\n"
-            "\t-1    // currentPatrolPointIndex\n"
-            "\t\"(none)\"\t\t// nextPatrolPoint\n"
-            "\t2    // spawnType\n"
-            "\t\"%s\"    // modelName\n"
-            "\t{ // motion state\n"
-            "\t\t\"standambient\",0 // current motion name, curFrameNumber\n"
-            "\t}\n"
-            "\t1\n"
-            "\t0\n"
-            "\t2\n"
-            "} CSoldier \"Boss1\"\n", arg);
-    }
-    size_t rest = strlen(end) + 1;
-    int blen = strlen(blk);
-    memmove(start + blen, end, rest);
-    memcpy(start, blk, blen);
-    return 1;
-}
-
 // Rewrite the heroType number inside { CHeroPlaceholder "HeroPlaceholder0"
 // (player model: 1=Rayne 2=Mynce 3=Butcheress 4=Rayne act 1).
 static int MsnSkin(char* txt, int ht) {
@@ -528,13 +287,11 @@ static int MsnSkin(char* txt, int ht) {
 }
 
 static void ApplyAppearance() {
-    // Soldier/elite/boss swaps only exist in modes 0-1 (monster and boss
-    // rush MSNs use fixed native classes); the player skin applies to all.
-    char sold[64], eli[64], boss[64], bcls[16], skin[64];
+    // Soldier/elite swaps exist only in the challenge arena (monster and
+    // boss-rush MSNs have no soldier-class actors); the skin applies to all.
+    char sold[64], eli[64], skin[64];
     GetPrivateProfileStringA("Appearance", "Soldier", "", sold, 64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Elite",   "", eli,  64, INI_FILE);
-    GetPrivateProfileStringA("Appearance", "Boss",    "", boss, 64, INI_FILE);
-    GetPrivateProfileStringA("Appearance", "BossClass", "", bcls, 16, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Skin",    "", skin, 64, INI_FILE);
 
     int ht = 0;
@@ -544,8 +301,7 @@ static void ApplyAppearance() {
     // show Rayne anyway — normalize it so the file gets heroType=1.
     if (*skin && !ht) ht = 1;
 
-    const char* msn = g_mode == 1 ? "world\\bossbattle.msn"
-                    : g_mode == 2 ? "world\\monster.msn"
+    const char* msn = g_mode == 2 ? "world\\monster.msn"
                     : g_mode == 3 ? "world\\bossrush.msn"
                                   : "world\\challenge.msn";
     FILE* f = fopen(msn, "rb");
@@ -555,60 +311,25 @@ static void ApplyAppearance() {
     fread(txt, 1, sz, f); fclose(f);
     txt[sz] = 0;
 
-    // Restore check: a cleared Boss key must put Boss1 back to CSoldier —
-    // otherwise a stale hero/NPC block from an earlier run persists.
-    int stale = (g_mode == 1)
-        && (strstr(txt, "{ CNPC \"Boss1\"") || strstr(txt, "{ CMainCharacter \"Boss1\""));
-    if (g_mode >= 2) { *sold = *eli = *boss = *bcls = 0; }
-    if (!*sold && !*eli && !*boss && !*bcls && !stale && !ht) { free(txt); return; }
-    if (stale && !*boss && !*bcls) strcpy(boss, "NAZI_BARROCK.DFM");
+    if (g_mode != 0) { *sold = *eli = 0; }
+    if (!*sold && !*eli && !ht) { free(txt); return; }
 
     int n = 0;
     if (ht) n += MsnSkin(txt, ht);
     if (*sold) n += MsnSwap(txt, "SoldierS", sold);
     if (*eli)  n += MsnSwap(txt, "EliteS",  eli);
-    if (g_mode == 1) {
-        // Boss selector: a bare hero name picks the CMainCharacter class
-        // with that heroType (full dhampir AI + own model/animations);
-        // a .DFM name keeps the CSoldier block or converts to CNPC for
-        // NPC-skeleton models.
-        static const char* HEROS[] = { "Rayne", "Mynce", "Butcheress", "RayneLA" };
-        static const int    HTS[]   = { 1, 2, 3, 4 };
-        int kind = -1; const char* barg = boss;
-        char htbuf[8];
-        if (*bcls && !_stricmp(bcls, "CNPC")) kind = 1;
-        for (int i = 0; *boss && kind < 0 && HEROS[i]; ++i)
-            if (!_stricmp(boss, HEROS[i])) {
-                kind = 2;
-                sprintf(htbuf, "%d", HTS[i]);
-                barg = htbuf;
-            }
-        if (kind < 0 && *boss) {
-            kind = 0;
-            for (int i = 0; NPC_MODELS[i]; ++i)
-                if (!_stricmp(boss, NPC_MODELS[i])) { kind = 1; break; }
-        }
-        if (kind >= 0) {
-            if (!*boss) { strcpy(boss, "NAZI_BARROCK.DFM"); barg = boss; }
-            n += MsnBossBlock(txt, kind, barg);
-        }
-    }
     f = fopen(msn, "wb");
     if (f) { fwrite(txt, 1, strlen(txt), f); fclose(f); }
     free(txt);
-    DiTrace("APPEAR %s swaps=%d (sold=%s eli=%s boss=%s cls=%s)\n",
-            msn, n, sold, eli, boss, bcls);
+    DiTrace("APPEAR %s swaps=%d (sold=%s eli=%s skin=%s)\n",
+            msn, n, sold, eli, skin);
 }
 
 // Menu action: queue the challenge mission through the same path the
 // native Act rows use, then RET_MISSION_GO runs callMenu(3)+cleanup.
-// d==3 selects the Boss Battle arena instead.
+// d==4 picks Monster Mash, d==5 Boss Rush, d==6 Endless Horde.
 static void StartChallenge(int d) {
-    if (d == 3) {
-        strcpy((char*)g_missionName, MSN_BOSSBATTLE);
-        g_mode = 1;
-        g_diff = 0;
-    } else if (d == 4) {
+    if (d == 4) {
         strcpy((char*)g_missionName, MSN_MONSTER);
         g_mode = 2;
         g_diff = 0;
@@ -758,7 +479,7 @@ static void MboxSet(BYTE* e, char* orig, char* cmd) {
 // WPHero waypoints and floor gun pickups.
 #define N_SOLDIERS 40
 #define N_ELITES   8
-#define N_ELITES_BOSS 7    // bossbattle.msn: EliteS8 is rebadged as Boss1
+#define N_ELITES_BOSS 7    // monster/bossrush MSNs: some elites are rebadged as bosses
 #define N_WPS      12
 
 // Wave campaign per mode/difficulty. Time runs from the first spawn until
@@ -769,8 +490,8 @@ static int NWAVES() {
     return CH_WAVES[g_mode][g_diff];
 }
 
-// Boss Battle (mode 1) fixed 6-wave gauntlet — officers, then sub-officers
-// joining in, ending with the boss + escort.
+// Monster Mash (mode 2) fixed 6-wave gauntlet — maraisreq packs, then
+// mutates joining in, ending with the Queen + escort.
 static const int B_SZ[6] = { 4, 5, 5, 6, 6, 2 };
 static const int B_EL[6] = { 0, 0, 1, 2, 3, 2 };
 
@@ -956,7 +677,7 @@ static void QueueWave(int w) {
     g_seenActors = 0;
     g_lastAlive = -1;
     int cnt = WaveSize(w), eli = WaveElites(w);
-    int nelites = (g_mode >= 1) ? N_ELITES_BOSS : N_ELITES;
+    int nelites = (g_mode >= 1) ? N_ELITES_BOSS : N_ELITES;   // mode>=2 arenas have 7 elites
     for (int i = 0; i < cnt; ++i) {
         sprintf(n, "SoldierS%d", (g_soldierRot++ % N_SOLDIERS) + 1);
         QueueSpawn(n);
@@ -965,9 +686,9 @@ static void QueueWave(int w) {
         sprintf(n, "EliteS%d", (g_eliteRot++ % nelites) + 1);
         QueueSpawn(n);
     }
-    // Boss Rush: every wave's own boss; Boss Battle: boss on the last wave.
+    // Boss Rush: every wave's own boss; Monster Mash: boss on the last wave.
     if (g_mode == 3) { sprintf(n, "Boss%d", min(w, 6)); QueueSpawn(n); }
-    else if (g_mode >= 1 && w == NWAVES()) QueueSpawn("Boss1");
+    else if (g_mode == 2 && w == NWAVES()) QueueSpawn("Boss1");
     DiTrace("CHAL wave %d/%d queued (%d+%d actors, diff=%d mode=%d) t=%u\n",
             w, NWAVES(), cnt, eli, g_diff, g_mode, GetTickCount());
 }
@@ -996,7 +717,7 @@ static void ShowHud(const char* text, float dur = -1.0f) {
 // Persist the finish time if it beats the stored record. One record per
 // mode — difficulty is a selection, not a separate challenge.
 static void RecordTime(DWORD ms) {
-    const char* key = g_mode == 1 ? "BestBoss" : g_mode == 2 ? "BestMonster"
+    const char* key = g_mode == 2 ? "BestMonster"
                     : g_mode == 3 ? "BestRush" : "BestTime";
     DWORD best = GetPrivateProfileIntA("Challenge", key, 0, INI_FILE);
     if (!best || ms < best) {
@@ -1020,7 +741,7 @@ static void RecordTime(DWORD ms) {
 static void WaveTick() {
     // Mission buffer must still match the armed arena — cancels if the
     // player left for another mission/menu.
-    const char* want = g_mode == 1 ? MSN_BOSSBATTLE : g_mode == 2 ? MSN_MONSTER
+    const char* want = g_mode == 2 ? MSN_MONSTER
                      : g_mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE;
     if (_strnicmp((char*)g_missionName, want, strlen(want))) {
         g_challenge = 0;
@@ -1381,23 +1102,17 @@ static void __declspec(naked) HookMenuInj() {
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
+        call ComposeLabelK
+        mov ecx, offset g_labelK
+        mov eax, ACTION_SKINSEL
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
         push 3
         call ComposeLabelS
         add esp, 4
         mov ecx, offset g_labelS + 480
-        mov eax, ACTION_CH_B
-        xor esi, esi
-        mov edx, g_fnAddItem
-        call edx
-        call ComposeLabelB
-        mov ecx, offset g_labelB
-        mov eax, ACTION_BOSSSEL
-        xor esi, esi
-        mov edx, g_fnAddItem
-        call edx
-        call ComposeLabelK
-        mov ecx, offset g_labelK
-        mov eax, ACTION_SKINSEL
+        mov eax, ACTION_MONSTER
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
@@ -1405,7 +1120,7 @@ static void __declspec(naked) HookMenuInj() {
         call ComposeLabelS
         add esp, 4
         mov ecx, offset g_labelS + 640
-        mov eax, ACTION_MONSTER
+        mov eax, ACTION_BOSSRUSH
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
@@ -1413,14 +1128,6 @@ static void __declspec(naked) HookMenuInj() {
         call ComposeLabelS
         add esp, 4
         mov ecx, offset g_labelS + 800
-        mov eax, ACTION_BOSSRUSH
-        xor esi, esi
-        mov edx, g_fnAddItem
-        call edx
-        push 6
-        call ComposeLabelS
-        add esp, 4
-        mov ecx, offset g_labelS + 960
         mov eax, ACTION_INFINITE
         xor esi, esi
         mov edx, g_fnAddItem
@@ -1464,25 +1171,11 @@ static void __declspec(naked) HookDispatch() {
         ret
     tryext:
         cmp edi, ACTION_CH_E
-        jne tryboss
+        jne tryskin
         push 2
         call StartChallenge
         add esp, 4
         push g_retMissionGo
-        ret
-    tryboss:
-        cmp edi, ACTION_CH_B
-        jne trysel
-        push 3
-        call StartChallenge
-        add esp, 4
-        push g_retMissionGo
-        ret
-    trysel:
-        cmp edi, ACTION_BOSSSEL
-        jne tryskin
-        call CycleBoss
-        push g_retHandled
         ret
     tryskin:
         cmp edi, ACTION_SKINSEL

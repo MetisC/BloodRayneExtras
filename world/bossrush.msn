@@ -63,7 +63,7 @@ CBarrier 2
 CAmmo 1
 CDemonActor 14
 // actor count
-113
+115
 // actor name list
 CHeroPlaceholder "HeroPlaceholder0"
 CBarrier "Barrier0"
@@ -173,6 +173,8 @@ CMainCharacter "Boss5"
 CQueen "Boss6"
 CSoldier "EliteS7"
 CGun "GunE7"
+CSoldier "EliteS8"
+CGun "GunE8"
 CGun "GunB1"
 CGun "GunFloor1"
 CGun "GunFloor2"
@@ -412,7 +414,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -427,7 +429,7 @@ CGun "GunFloor4"
 	"GS1"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS1"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -498,7 +500,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -513,7 +515,7 @@ CGun "GunFloor4"
 	"GS2"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS2"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -584,7 +586,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -599,7 +601,7 @@ CGun "GunFloor4"
 	"GS3"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS3"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -670,7 +672,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -685,7 +687,7 @@ CGun "GunFloor4"
 	"GS4"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS4"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -756,7 +758,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -771,7 +773,7 @@ CGun "GunFloor4"
 	"GS5"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS5"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -842,7 +844,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -857,7 +859,7 @@ CGun "GunFloor4"
 	"GS6"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS6"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -928,7 +930,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -943,7 +945,7 @@ CGun "GunFloor4"
 	"GS7"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS7"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1014,7 +1016,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1029,7 +1031,7 @@ CGun "GunFloor4"
 	"GS8"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS8"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1100,7 +1102,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1115,7 +1117,7 @@ CGun "GunFloor4"
 	"GS9"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS9"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1186,7 +1188,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1201,7 +1203,7 @@ CGun "GunFloor4"
 	"GS10"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS10"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1272,7 +1274,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1287,7 +1289,7 @@ CGun "GunFloor4"
 	"GS11"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS11"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1358,7 +1360,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1373,7 +1375,7 @@ CGun "GunFloor4"
 	"GS12"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS12"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1444,7 +1446,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1459,7 +1461,7 @@ CGun "GunFloor4"
 	"GS13"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS13"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1530,7 +1532,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1545,7 +1547,7 @@ CGun "GunFloor4"
 	"GS14"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS14"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1616,7 +1618,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1631,7 +1633,7 @@ CGun "GunFloor4"
 	"GS15"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS15"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1702,7 +1704,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1717,7 +1719,7 @@ CGun "GunFloor4"
 	"GS16"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS16"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1788,7 +1790,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1803,7 +1805,7 @@ CGun "GunFloor4"
 	"GS17"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS17"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1874,7 +1876,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1889,7 +1891,7 @@ CGun "GunFloor4"
 	"GS18"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS18"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -1960,7 +1962,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -1975,7 +1977,7 @@ CGun "GunFloor4"
 	"GS19"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS19"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2046,7 +2048,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2061,7 +2063,7 @@ CGun "GunFloor4"
 	"GS20"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS20"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2132,7 +2134,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2147,7 +2149,7 @@ CGun "GunFloor4"
 	"GS21"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS21"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2218,7 +2220,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2233,7 +2235,7 @@ CGun "GunFloor4"
 	"GS22"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS22"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2304,7 +2306,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2319,7 +2321,7 @@ CGun "GunFloor4"
 	"GS23"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS23"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2390,7 +2392,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2405,7 +2407,7 @@ CGun "GunFloor4"
 	"GS24"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS24"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2476,7 +2478,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2491,7 +2493,7 @@ CGun "GunFloor4"
 	"GS25"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS25"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2562,7 +2564,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2577,7 +2579,7 @@ CGun "GunFloor4"
 	"GS26"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS26"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2648,7 +2650,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2663,7 +2665,7 @@ CGun "GunFloor4"
 	"GS27"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS27"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2734,7 +2736,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2749,7 +2751,7 @@ CGun "GunFloor4"
 	"GS28"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS28"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2820,7 +2822,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2835,7 +2837,7 @@ CGun "GunFloor4"
 	"GS29"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS29"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2906,7 +2908,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -2921,7 +2923,7 @@ CGun "GunFloor4"
 	"GS30"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS30"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -2992,7 +2994,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3007,7 +3009,7 @@ CGun "GunFloor4"
 	"GS31"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS31"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3078,7 +3080,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3093,7 +3095,7 @@ CGun "GunFloor4"
 	"GS32"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS32"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3164,7 +3166,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3179,7 +3181,7 @@ CGun "GunFloor4"
 	"GS33"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS33"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3250,7 +3252,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3265,7 +3267,7 @@ CGun "GunFloor4"
 	"GS34"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS34"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3336,7 +3338,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3351,7 +3353,7 @@ CGun "GunFloor4"
 	"GS35"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS35"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3422,7 +3424,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3437,7 +3439,7 @@ CGun "GunFloor4"
 	"GS36"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS36"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3508,7 +3510,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3523,7 +3525,7 @@ CGun "GunFloor4"
 	"GS37"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS37"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3594,7 +3596,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3609,7 +3611,7 @@ CGun "GunFloor4"
 	"GS38"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS38"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3680,7 +3682,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3695,7 +3697,7 @@ CGun "GunFloor4"
 	"GS39"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS39"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3766,7 +3768,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"GGG_OFFICER.DFM"    // modelName
+	"SOLDIER.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -3781,7 +3783,7 @@ CGun "GunFloor4"
 	"GS40"    // group
 	0    // selfIlluminated
 	0    // attachCount
-	"WALTHER.SMF"    // modelName
+	"MP34.SMF"    // modelName
 	"SoldierS40"		// carriedByActor
 	0    // weaponState
 	32    // ammoCount
@@ -3805,7 +3807,7 @@ CGun "GunFloor4"
 	900    // hitPoints
 	1    // numCarryHands
 	1    // carry hand
-	"GunB1"		// carry actor
+	"GunE8"		// carry actor
 	0.307564,-0.132776,0.130445    // carry pos
 	0.0158968,1.42652,1.55902    // carry orient
 	{ // clothList
@@ -4128,7 +4130,7 @@ CGun "GunFloor4"
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
 	1    // spawnType
-	"SS_OFFICER.DFM"    // modelName
+	"GGG_ELITE.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
 	}
@@ -4157,7 +4159,92 @@ CGun "GunFloor4"
 	12    // gunType
 	0    // isCustomGun
 } CGun "GunE7"
-
+{ CSoldier "EliteS8"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	"GE8"    // group
+	0    // selfIlluminated
+	0    // attachCount
+	250    // hitPoints
+	1    // numCarryHands
+	1    // carry hand
+	"GunE8"		// carry actor
+	0.307564,-0.132776,0.130445    // carry pos
+	0.0158968,1.42652,1.55902    // carry orient
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	250    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	0.99122    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	1    // loquaciousness
+	0.914121    // evasiveness
+	0.77485    // courage
+	0.57181    // loyalty
+	0.627583    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.732719    // intelligence
+	0.716666    // aggression
+	0.686956    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	1    // spawnType
+	"GGG_ELITE.DFM"    // modelName
+	{ // motion state
+		"standambient",0 // current motion name, curFrameNumber
+	}
+	1
+	0
+	2
+} CSoldier "EliteS8"
+{ CGun "GunE8"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	"GE8"    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS8"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE8"
 { CGun "GunB1"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient

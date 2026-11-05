@@ -85,6 +85,14 @@ txt = re.sub(r'CSoldier "EliteS\d+"', _ed, txt)
 # NOTE: the number after each class in the header table is the class's
 # serialized format *version*, NOT an instance count — leave it untouched.
 
+# GunE8 dangles: its block still says carriedByActor "EliteS8" but that name
+# became Boss1 -> "can't find actor" warning at load. Drop decl + block.
+txt = re.sub(r'CGun "GunE8"\n', '', txt, count=1)
+txt = re.sub(r'\{ CGun "GunE8".*?\} CGun "GunE8"\n?', '', txt, flags=re.S, count=1)
+# actor-count header must match the remaining declaration lines
+n_decl = len(re.findall(r'^\s*C\w+ "\w+"\s*$', txt, re.M))
+txt = re.sub(r'(// actor count\n)\d+', r'\g<1>%d' % n_decl, txt)
+
 open(DST, "w", encoding="latin-1").write(txt)
 print("wrote", DST)
 for k in ("CMaraisreq", "CMutate", "CQueen", "Boss1", "SoldierS40"):
