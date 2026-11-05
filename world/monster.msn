@@ -1,0 +1,4307 @@
+// mission version, actor version
+8,4
+// Root name of mission
+monster
+// setList
+1
+BOILERROOM.PST
+// actorTypeList
+55
+CWeapon 11
+CWayPoint 3
+CWaterActor 12
+CVampire 2
+CNest 3
+CTVBat 1
+CTrigger 15
+CThule 1
+CTempleDetail 1
+CTank 1
+CSpotLight 1
+CSpinner 3
+CSoldier 13
+CRopeLadder 2
+CRail 4
+CQueen 3
+CPlatform 21
+CPendulum 8
+CNPC 7
+CMutate 5
+CMech 4
+CMaraisreq 8
+CMauler 1
+CMainCharacter 2
+CLiteBulb 6
+CLever 9
+CHero 14
+CHeroPlaceholder 4
+CHeinrich 4
+CHealthItem 3
+CGun 2
+CGlass 12
+CGemini 1
+CFrog 1
+CFlies 2
+CFlame 11
+CEnemy 19
+CEmitter 23
+CDoor 21
+CDecal 3
+CDaemiteCluster 1
+CDaemWar 3
+CDaemite 4
+CCurtain 10
+CConveyor 2
+CChain 4
+CCharacter 16
+CCameraPathActor 1
+CBreakable 12
+CBoxActor 36
+CBeliar 1
+CBatCreature 6
+CBarrier 2
+CAmmo 1
+CDemonActor 14
+// actor count
+120
+// actor name list
+CHeroPlaceholder "HeroPlaceholder0"
+CBarrier "Barrier0"
+CBarrier "Barrier1"
+CBarrier "Barrier2"
+CBarrier "Barrier3"
+CWayPoint "WPS1"
+CWayPoint "WPS2"
+CWayPoint "WPS3"
+CWayPoint "WPS4"
+CWayPoint "WPS5"
+CWayPoint "WPS6"
+CWayPoint "WPS7"
+CWayPoint "WPS8"
+CWayPoint "WPS9"
+CWayPoint "WPS10"
+CWayPoint "WPS11"
+CWayPoint "WPS12"
+CWayPoint "WPS13"
+CWayPoint "WPS14"
+CWayPoint "WPHero"
+CMaraisreq "SoldierS1"
+CGun "GunS1"
+CMaraisreq "SoldierS2"
+CGun "GunS2"
+CMaraisreq "SoldierS3"
+CGun "GunS3"
+CMaraisreq "SoldierS4"
+CGun "GunS4"
+CMaraisreq "SoldierS5"
+CGun "GunS5"
+CMaraisreq "SoldierS6"
+CGun "GunS6"
+CMaraisreq "SoldierS7"
+CGun "GunS7"
+CMaraisreq "SoldierS8"
+CGun "GunS8"
+CMaraisreq "SoldierS9"
+CGun "GunS9"
+CMaraisreq "SoldierS10"
+CGun "GunS10"
+CMaraisreq "SoldierS11"
+CGun "GunS11"
+CMaraisreq "SoldierS12"
+CGun "GunS12"
+CMaraisreq "SoldierS13"
+CGun "GunS13"
+CMaraisreq "SoldierS14"
+CGun "GunS14"
+CMaraisreq "SoldierS15"
+CGun "GunS15"
+CMaraisreq "SoldierS16"
+CGun "GunS16"
+CMaraisreq "SoldierS17"
+CGun "GunS17"
+CMaraisreq "SoldierS18"
+CGun "GunS18"
+CMaraisreq "SoldierS19"
+CGun "GunS19"
+CMaraisreq "SoldierS20"
+CGun "GunS20"
+CMaraisreq "SoldierS21"
+CGun "GunS21"
+CMaraisreq "SoldierS22"
+CGun "GunS22"
+CMaraisreq "SoldierS23"
+CGun "GunS23"
+CMaraisreq "SoldierS24"
+CGun "GunS24"
+CMaraisreq "SoldierS25"
+CGun "GunS25"
+CMaraisreq "SoldierS26"
+CGun "GunS26"
+CMaraisreq "SoldierS27"
+CGun "GunS27"
+CMaraisreq "SoldierS28"
+CGun "GunS28"
+CMaraisreq "SoldierS29"
+CGun "GunS29"
+CMaraisreq "SoldierS30"
+CGun "GunS30"
+CMaraisreq "SoldierS31"
+CGun "GunS31"
+CMaraisreq "SoldierS32"
+CGun "GunS32"
+CMaraisreq "SoldierS33"
+CGun "GunS33"
+CMaraisreq "SoldierS34"
+CGun "GunS34"
+CMaraisreq "SoldierS35"
+CGun "GunS35"
+CMaraisreq "SoldierS36"
+CGun "GunS36"
+CMaraisreq "SoldierS37"
+CGun "GunS37"
+CMaraisreq "SoldierS38"
+CGun "GunS38"
+CMaraisreq "SoldierS39"
+CGun "GunS39"
+CMaraisreq "SoldierS40"
+CGun "GunS40"
+CMutate "EliteS1"
+CGun "GunE1"
+CMutate "EliteS2"
+CGun "GunE2"
+CMutate "EliteS3"
+CGun "GunE3"
+CMutate "EliteS4"
+CGun "GunE4"
+CMutate "EliteS5"
+CGun "GunE5"
+CMutate "EliteS6"
+CGun "GunE6"
+CMutate "EliteS7"
+CGun "GunE7"
+CQueen "Boss1"
+CGun "GunE8"
+CGun "GunFloor1"
+CGun "GunFloor2"
+CGun "GunFloor3"
+CGun "GunFloor4"
+// actor data list
+{ CHeroPlaceholder "HeroPlaceholder0"
+	0,242.392,0,272.733    // location
+	0,0,0.518797    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	0    // index
+	"Hero"    // heroName
+	0
+	1    // heroType
+} CHeroPlaceholder "HeroPlaceholder0"
+{ CBarrier "Barrier0"
+	0,308.7,20,339.78    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	3.01266,20.1835,15.3865    // size
+	""    // effectClassNameList
+	1    // addToPathGrid
+} CBarrier "Barrier0"
+{ CBarrier "Barrier1"
+	0,309.447,-1.78814e-007,294.502    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	1.29444,8.14302,6.29097    // size
+	""    // effectClassNameList
+	1    // addToPathGrid
+} CBarrier "Barrier1"
+{ CBarrier "Barrier2"
+	0,195.353,-1.78814e-007,343.998    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	1.29444,8.14302,6.29097    // size
+	""    // effectClassNameList
+	1    // addToPathGrid
+} CBarrier "Barrier2"
+{ CBarrier "Barrier3"
+	0,224.864,0.0307615,394.847    // location
+	0,0,-1.52763    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	1.01604,19.6298,16.6113    // size
+	""    // effectClassNameList
+	1    // addToPathGrid
+} CBarrier "Barrier3"
+{ CWayPoint "WPS1"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS1"
+{ CWayPoint "WPS2"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS2"
+{ CWayPoint "WPS3"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS3"
+{ CWayPoint "WPS4"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS4"
+{ CWayPoint "WPS5"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS5"
+{ CWayPoint "WPS6"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS6"
+{ CWayPoint "WPS7"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS7"
+{ CWayPoint "WPS8"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS8"
+{ CWayPoint "WPS9"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS9"
+{ CWayPoint "WPS10"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS10"
+{ CWayPoint "WPS11"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS11"
+{ CWayPoint "WPS12"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS12"
+{ CWayPoint "WPS13"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS13"
+{ CWayPoint "WPS14"
+	0,242.000,0.0,337.000    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPS14"
+{ CWayPoint "WPHero"
+	0,250.0,0,345.0    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+} CWayPoint "WPHero"
+{ CMaraisreq "SoldierS1"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS1"
+{ CGun "GunS1"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS1"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS1"
+{ CMaraisreq "SoldierS2"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS2"
+{ CGun "GunS2"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS2"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS2"
+{ CMaraisreq "SoldierS3"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS3"
+{ CGun "GunS3"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS3"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS3"
+{ CMaraisreq "SoldierS4"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS4"
+{ CGun "GunS4"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS4"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS4"
+{ CMaraisreq "SoldierS5"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS5"
+{ CGun "GunS5"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS5"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS5"
+{ CMaraisreq "SoldierS6"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS6"
+{ CGun "GunS6"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS6"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS6"
+{ CMaraisreq "SoldierS7"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS7"
+{ CGun "GunS7"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS7"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS7"
+{ CMaraisreq "SoldierS8"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS8"
+{ CGun "GunS8"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS8"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS8"
+{ CMaraisreq "SoldierS9"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS9"
+{ CGun "GunS9"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS9"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS9"
+{ CMaraisreq "SoldierS10"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS10"
+{ CGun "GunS10"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS10"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS10"
+{ CMaraisreq "SoldierS11"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS11"
+{ CGun "GunS11"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS11"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS11"
+{ CMaraisreq "SoldierS12"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS12"
+{ CGun "GunS12"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS12"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS12"
+{ CMaraisreq "SoldierS13"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS13"
+{ CGun "GunS13"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS13"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS13"
+{ CMaraisreq "SoldierS14"
+	0,242.000,0.0,337.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS14"
+{ CGun "GunS14"
+	0,242.000,0.0,337.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS14"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS14"
+{ CMaraisreq "SoldierS15"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS15"
+{ CGun "GunS15"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS15"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS15"
+{ CMaraisreq "SoldierS16"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS16"
+{ CGun "GunS16"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS16"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS16"
+{ CMaraisreq "SoldierS17"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS17"
+{ CGun "GunS17"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS17"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS17"
+{ CMaraisreq "SoldierS18"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS18"
+{ CGun "GunS18"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS18"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS18"
+{ CMaraisreq "SoldierS19"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS19"
+{ CGun "GunS19"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS19"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS19"
+{ CMaraisreq "SoldierS20"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS20"
+{ CGun "GunS20"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS20"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS20"
+{ CMaraisreq "SoldierS21"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS21"
+{ CGun "GunS21"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS21"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS21"
+{ CMaraisreq "SoldierS22"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS22"
+{ CGun "GunS22"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS22"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS22"
+{ CMaraisreq "SoldierS23"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS23"
+{ CGun "GunS23"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS23"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS23"
+{ CMaraisreq "SoldierS24"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS24"
+{ CGun "GunS24"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS24"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS24"
+{ CMaraisreq "SoldierS25"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS25"
+{ CGun "GunS25"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS25"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS25"
+{ CMaraisreq "SoldierS26"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS26"
+{ CGun "GunS26"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS26"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS26"
+{ CMaraisreq "SoldierS27"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS27"
+{ CGun "GunS27"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS27"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS27"
+{ CMaraisreq "SoldierS28"
+	0,242.000,0.0,337.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS28"
+{ CGun "GunS28"
+	0,242.000,0.0,337.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS28"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS28"
+{ CMaraisreq "SoldierS29"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS29"
+{ CGun "GunS29"
+	0,250.000,0.0,377.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS29"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS29"
+{ CMaraisreq "SoldierS30"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS30"
+{ CGun "GunS30"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS30"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS30"
+{ CMaraisreq "SoldierS31"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS31"
+{ CGun "GunS31"
+	0,277.713,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS31"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS31"
+{ CMaraisreq "SoldierS32"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS32"
+{ CGun "GunS32"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS32"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS32"
+{ CMaraisreq "SoldierS33"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS33"
+{ CGun "GunS33"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS33"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS33"
+{ CMaraisreq "SoldierS34"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS34"
+{ CGun "GunS34"
+	0,266.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS34"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS34"
+{ CMaraisreq "SoldierS35"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS35"
+{ CGun "GunS35"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS35"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS35"
+{ CMaraisreq "SoldierS36"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS36"
+{ CGun "GunS36"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS36"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS36"
+{ CMaraisreq "SoldierS37"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS37"
+{ CGun "GunS37"
+	0,222.287,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS37"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS37"
+{ CMaraisreq "SoldierS38"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS38"
+{ CGun "GunS38"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS38"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS38"
+{ CMaraisreq "SoldierS39"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS39"
+{ CGun "GunS39"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS39"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS39"
+{ CMaraisreq "SoldierS40"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	80    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	80    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.02781    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	100    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.388714    // loquaciousness
+	0.523408    // evasiveness
+	0.792032    // courage
+	0.525605    // loyalty
+	0.793344    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.722816    // intelligence
+	0.873699    // aggression
+	0.938887    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"marai3.dfm"    // modelName
+	{ // motion state
+		"defaultstand1",0 // current motion name, curFrameNumber
+	}
+	0
+} CMaraisreq "SoldierS40"
+{ CGun "GunS40"
+	0,234.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MP34.SMF"    // modelName
+	"SoldierS40"		// carriedByActor
+	0    // weaponState
+	32    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	5    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	3    // gunType
+	0    // isCustomGun
+} CGun "GunS40"
+{ CMutate "EliteS1"
+	0,282.000,0.0,345.000    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS1"
+{ CGun "GunE1"
+	0,282.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS1"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE1"
+{ CMutate "EliteS2"
+	0,250.000,0.0,313.000    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS2"
+{ CGun "GunE2"
+	0,250.000,0.0,313.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS2"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE2"
+{ CMutate "EliteS3"
+	0,218.000,0.0,345.000    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS3"
+{ CGun "GunE3"
+	0,218.000,0.0,345.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS3"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE3"
+{ CMutate "EliteS4"
+	0,258.000,0.0,353.000    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS4"
+{ CGun "GunE4"
+	0,258.000,0.0,353.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS4"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE4"
+{ CMutate "EliteS5"
+	0,266.000,0.0,372.713    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS5"
+{ CGun "GunE5"
+	0,266.000,0.0,372.713    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS5"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE5"
+{ CMutate "EliteS6"
+	0,277.713,0.0,329.000    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS6"
+{ CGun "GunE6"
+	0,277.713,0.0,329.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS6"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE6"
+{ CMutate "EliteS7"
+	0,234.000,0.0,317.287    // location
+	0,0,0.758867    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	220    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	220    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	1.05753    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	200    // guardDistance
+	10    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.417856    // loquaciousness
+	0.776482    // evasiveness
+	0.685873    // courage
+	0.95172    // loyalty
+	0.583209    // marksmanship
+	0.5    // awareness
+	0.5    // perception
+	"(none)"		// ourPost
+	0.832362    // intelligence
+	0.72512    // aggression
+	0.655431    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	"mutate_2.dfm"    // modelName
+	{ // motion state
+		"stand1",0 // current motion name, curFrameNumber
+	}
+	0    // postModeFlag
+	"none"    // postModeCond
+} CMutate "EliteS7"
+{ CGun "GunE7"
+	0,234.000,0.0,317.287    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS7"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE7"
+{ CQueen "Boss1"
+	0,222.287,0.0,361.000    // location
+	0,0,3.03352    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	1500    // hitPoints
+	0    // numCarryHands
+	{ // clothList
+		0 // clothCount
+	}
+	1    // sizeScale
+	1500    // maxHitPoints
+	0    // spectralFlag
+	0    // invulnerableFlag
+	0    // etheralFlag
+	"(none)"		// scriptWalkDest
+	3    // scriptWalkDist
+	1e+030    // scriptRunDist
+	-1    // scriptWalkTimer
+	0    // scriptWalkState
+	"(none)"		// scriptDoorToOpen
+	"(none)"		// whoIsControllingMe
+	1    // canInfest
+	0.916199    // speed
+	0    // poolMe
+	1    // randomizeMe
+	"(none)"		// scriptVictim
+	""    // patrolNamePattern
+	500    // guardDistance
+	150    // victimHeight
+	"(none)"		// victim
+	10    // smellDist
+	0.2    // loquaciousness
+	0.5    // evasiveness
+	0.5    // courage
+	0.5    // loyalty
+	0.5    // marksmanship
+	0.5    // awareness
+	1    // perception
+	"(none)"		// ourPost
+	0.5    // intelligence
+	1    // aggression
+	0.5    // valor
+	0    // postModeFlag
+	"none"    // postModeCond
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	-1    // largestPatrolPointIndex
+	-1    // currentPatrolPointIndex
+	"(none)"		// nextPatrolPoint
+	2    // spawnType
+	0.916199    // speed
+	"Queen.dfm"    // modelName
+	{ // motion state
+		"heademerge",19.8495 // current motion name, curFrameNumber
+	}
+	0    // postMode
+	"(none)"		// ourPost
+	0    // holdPosFlag
+	"none"    // holdPosCond
+	0.5    // courage
+	0.5    // loyalty
+	0.5    // marksmanship
+	0.2    // loquaciousness
+	0.5    // evasiveness
+	0.5    // intelligence
+	1    // aggression
+	0.5    // valor
+} CQueen "Boss1"
+{ CGun "GunE8"
+	0,222.287,0.0,361.000    // location
+	0,0,0    // orient
+	0    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"EliteS8"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunE8"
+{ CGun "GunFloor1"
+	0,245,0,340    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"(none)"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunFloor1"
+{ CGun "GunFloor2"
+	0,255,0,350    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"MG42.SMF"    // modelName
+	"(none)"		// carriedByActor
+	0    // weaponState
+	50    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	13    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	200    // effectiveRange
+	12    // gunType
+	0    // isCustomGun
+} CGun "GunFloor2"
+{ CGun "GunFloor3"
+	0,250,0,360    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"FALLSHIRMG42.SMF"    // modelName
+	"(none)"		// carriedByActor
+	0    // weaponState
+	20    // ammoCount
+	11    // ammoType
+	0    // simTimer
+	10    // fireRate
+	50    // minDamage
+	90    // maxDamage
+	0    // canAttachLight
+	120    // effectiveRange
+	17    // gunType
+	0    // isCustomGun
+} CGun "GunFloor3"
+{ CGun "GunFloor4"
+	0,240,0,355    // location
+	0,0,0    // orient
+	1    // enabled
+	""    // group
+	0    // selfIlluminated
+	0    // attachCount
+	"GREASEGUN.SMF"    // modelName
+	"(none)"		// carriedByActor
+	0    // weaponState
+	30    // ammoCount
+	12    // ammoType
+	0    // simTimer
+	4    // fireRate
+	20    // minDamage
+	60    // maxDamage
+	0    // canAttachLight
+	60    // effectiveRange
+	0    // gunType
+	0    // isCustomGun
+} CGun "GunFloor4"
