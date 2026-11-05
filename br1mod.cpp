@@ -1272,14 +1272,16 @@ static void __declspec(naked) HookMenuInj() {
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
-        push 4
-        call ComposeLabelS
-        add esp, 4
-        mov ecx, offset g_labelS + 640
-        mov eax, ACTION_BOSSRUSH
-        xor esi, esi
-        mov edx, g_fnAddItem
-        call edx
+        // Boss Rush row disabled per user request — label, action and
+        // arena files stay in place; only the menu item is skipped.
+        //push 4
+        //call ComposeLabelS
+        //add esp, 4
+        //mov ecx, offset g_labelS + 640
+        //mov eax, ACTION_BOSSRUSH
+        //xor esi, esi
+        //mov edx, g_fnAddItem
+        //call edx
         push 5
         call ComposeLabelS
         add esp, 4
