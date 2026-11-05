@@ -87,7 +87,7 @@
 #define ACTION_MONSTER  0x166   // Monster Mash arena
 #define ACTION_BOSSRUSH 0x167   // Boss Rush arena
 #define ACTION_INFINITE 0x168   // endless horde (record = waves)
-#define ACTION_MISSIONS 0x169   // unlock all missions
+#define ACTION_SKINSEL  0x169   // player-skin cycler (heroType)
 
 #define INI_FILE       ".\\br1mod.ini"
 #define MSN_CHALLENGE  "challenge.msn"
@@ -102,7 +102,7 @@ static char  g_label[160];
 static char  g_labelS[7][160];
 static char  g_labelB[160];
 static char  g_labelM[160];
-static int   g_missions = 0;
+static char  g_labelK[160];
 static BYTE  g_progOrig = 0xFF;
 static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-level
 static int   g_diff = 0;       // 0 Normal, 1 Hard, 2 Extreme
@@ -169,13 +169,12 @@ static const char* LABEL_CH[7][6] = {
       "Endless Horde", "Endless Horde", "Endless Horde" },
 };
 
-static const char* LABEL_MIS[6] = {
-    "Unlock all missions", "Desbloquear misiones", "Unlock all missions",
-    "Unlock all missions", "Unlock all missions", "Unlock all missions",
-};
-
 static const char* LABEL_BSEL[6] = {
     "Boss", "Jefe", "Boss", "Boss", "Boss", "Boss",
+};
+
+static const char* LABEL_SKIN[6] = {
+    "Appearance", "Apariencia", "Apparence", "Aspetto", "Appearance", "Appearance",
 };
 
 // Boss Battle appearance cycler: "" = native NAZI_BARROCK.
@@ -183,6 +182,10 @@ static const char* BOSS_OPTS[] = {
     "", "Mynce", "Butcheress", "Rayne", "RayneLA",
     "NAZI_BARROCK.DFM", "BUTCHERESS.DFM", NULL
 };
+
+// Player-skin cycler: name -> heroType written into CHeroPlaceholder.
+static const char* SKIN_OPTS[] = { "Rayne", "Mynce", "Butcheress", "RayneLA", NULL };
+static const int   SKIN_HTS[]  = { 1, 2, 3, 4 };
 
 static const char* ModLocalize(const char* key) {
     const char* t = Localize(key);
@@ -241,26 +244,23 @@ static void CycleBoss() {
     WritePrivateProfileStringA("Appearance", "Boss", val, INI_FILE);
 }
 
-// "Unlock all missions" — the act rows in the level selector are gated by
-// the progression byte the menu hook already reads (cmp byte[prog],3).
-// ON forces it to 3+ (all acts visible); OFF restores the saved value.
-static void ApplyMissions() {
-    if (!g_progByte) return;
-    if (g_progOrig == 0xFF) g_progOrig = *(BYTE*)g_progByte;
-    *(BYTE*)g_progByte = g_missions
-        ? (g_progOrig < 3 ? 3 : g_progOrig)
-        : g_progOrig;
-}
-static void ToggleMissions() {
-    g_missions ^= 1;
-    WritePrivateProfileStringA("Missions", "all", NULL, INI_FILE);
-    WritePrivateProfileStringA("Missions", "all", g_missions ? "1" : "0", INI_FILE);
-    ApplyMissions();
-}
-static void ComposeLabelM() {
+// Player-skin cycler row: shows/cycles [Appearance] Skin (hero model).
+static void ComposeLabelK() {
     if (!g_langDetected) DetectLang();
-    sprintf(g_labelM, "%s: %s", ModLocalize(LABEL_MIS[g_lang]),
-            ModLocalize(g_missions ? "Yes" : "No"));
+    char cur[64] = "";
+    GetPrivateProfileStringA("Appearance", "Skin", "", cur, sizeof(cur), INI_FILE);
+    sprintf(g_labelK, "%s: %s", ModLocalize(LABEL_SKIN[g_lang]),
+            cur[0] ? cur : "Rayne");
+}
+
+static void CycleSkin() {
+    char cur[64] = "";
+    GetPrivateProfileStringA("Appearance", "Skin", "", cur, sizeof(cur), INI_FILE);
+    int idx = 0;
+    for (int i = 0; SKIN_OPTS[i]; i++)
+        if (!stricmp(SKIN_OPTS[i], cur)) { idx = i; break; }
+    idx++; if (!SKIN_OPTS[idx]) idx = 0;
+    WritePrivateProfileStringA("Appearance", "Skin", SKIN_OPTS[idx], INI_FILE);
 }
 
 // -------------------------- appearance swap --------------------------------
@@ -501,19 +501,45 @@ static int MsnBossBlock(char* txt, int kind, const char* arg) {
     return 1;
 }
 
+// Rewrite the heroType number inside { CHeroPlaceholder "HeroPlaceholder0"
+// (player model: 1=Rayne 2=Mynce 3=Butcheress 4=Rayne act 1).
+static int MsnSkin(char* txt, int ht) {
+    char* p = strstr(txt, "{ CHeroPlaceholder");
+    if (!p) return 0;
+    char* close = strstr(p, "} CHeroPlaceholder");
+    char* m = strstr(p, "// heroType");
+    if (!m || (close && m > close)) return 0;
+    char* s = m;
+    while (s > txt && *s != '\n') --s;
+    ++s;
+    while (*s == ' ' || *s == '\t') ++s;
+    int oldlen = 0;
+    while (s[oldlen] >= '0' && s[oldlen] <= '9') ++oldlen;
+    if (!oldlen) return 0;
+    char buf[8]; int bl = sprintf(buf, "%d", ht);
+    memmove(s + bl, s + oldlen, strlen(s + oldlen) + 1);
+    memcpy(s, buf, bl);
+    return 1;
+}
+
 static void ApplyAppearance() {
-    // Only modes 0 (challenge) and 1 (boss battle) have swap targets —
-    // monster/boss-rush MSNs use fixed native classes. Without this the
-    // [Appearance] keys would silently rewrite challenge.msn on those
-    // launches.
-    if (g_mode >= 2) return;
-    char sold[64], eli[64], boss[64], bcls[16];
+    // Soldier/elite/boss swaps only exist in modes 0-1 (monster and boss
+    // rush MSNs use fixed native classes); the player skin applies to all.
+    char sold[64], eli[64], boss[64], bcls[16], skin[64];
     GetPrivateProfileStringA("Appearance", "Soldier", "", sold, 64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Elite",   "", eli,  64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "Boss",    "", boss, 64, INI_FILE);
     GetPrivateProfileStringA("Appearance", "BossClass", "", bcls, 16, INI_FILE);
+    GetPrivateProfileStringA("Appearance", "Skin",    "", skin, 64, INI_FILE);
 
-    const char* msn = g_mode == 1 ? "world\\bossbattle.msn" : "world\\challenge.msn";
+    int ht = 0;
+    for (int i = 0; SKIN_OPTS[i]; ++i)
+        if (!_stricmp(skin, SKIN_OPTS[i])) { ht = SKIN_HTS[i]; break; }
+
+    const char* msn = g_mode == 1 ? "world\\bossbattle.msn"
+                    : g_mode == 2 ? "world\\monster.msn"
+                    : g_mode == 3 ? "world\\bossrush.msn"
+                                  : "world\\challenge.msn";
     FILE* f = fopen(msn, "rb");
     if (!f) { DiTrace("APPEAR open fail %s\n", msn); return; }
     fseek(f, 0, SEEK_END); long sz = ftell(f); fseek(f, 0, SEEK_SET);
@@ -525,10 +551,12 @@ static void ApplyAppearance() {
     // otherwise a stale hero/NPC block from an earlier run persists.
     int stale = (g_mode == 1)
         && (strstr(txt, "{ CNPC \"Boss1\"") || strstr(txt, "{ CMainCharacter \"Boss1\""));
-    if (!*sold && !*eli && !*boss && !*bcls && !stale) { free(txt); return; }
+    if (g_mode >= 2) { *sold = *eli = *boss = *bcls = 0; }
+    if (!*sold && !*eli && !*boss && !*bcls && !stale && !ht) { free(txt); return; }
     if (stale && !*boss && !*bcls) strcpy(boss, "NAZI_BARROCK.DFM");
 
     int n = 0;
+    if (ht) n += MsnSkin(txt, ht);
     if (*sold) n += MsnSwap(txt, "SoldierS", sold);
     if (*eli)  n += MsnSwap(txt, "EliteS",  eli);
     if (g_mode == 1) {
@@ -825,17 +853,16 @@ static const char* GrpFor(const char* n) {
 
 static void QueueSpawn(const char* name) {
     char b[64], wp[16];
-    // createActorGroup enables soldier + carried gun in one shot — the same
-    // path native MSNs use for reinforcement squads.
-    // NB: the runtime mailbox executor has INVERTED semantics for the
-    // actor commands — deleteActor(x)/deleteActorGroup(g) ACTIVATE the
-    // record (arg=0 at 0x4D9620), while createActor*/createActorGroup*
-    // deactivate it (arg=1). Verified against the disassembled executor.
+    // Native reinforcement vocabulary: createActorGroup materializes
+    // the dormant actors of a group (requires the MSN "group" field).
+    // setvictim($=hero) makes them hostile — spawned actors otherwise
+    // stand idle; allowenemyattack is queued once at mission arm.
     const char* g = GrpFor(name);
-    if (g) { sprintf(b, "deleteActorGroup(%s)", g); QPush(b); }
-    else   { sprintf(b, "deleteActor(%s)", name);   QPush(b); }
+    if (g) { sprintf(b, "createActorGroup(%s)", g); QPush(b); }
+    else   { sprintf(b, "createActor(%s)", name);   QPush(b); }
     sprintf(wp, "WPS%d", (g_wpRot++ % N_WPS) + 1);
     sprintf(b, "warpTo(%s,%s)", name, wp);  QPush(b);
+    sprintf(b, "setvictim(%s,MainCharacter0)", name); QPush(b);
     if (g_nSpawned < SP_MAX) {
         strncpy(g_spawned[g_nSpawned], name, 31);
         g_spawned[g_nSpawned][31] = 0;
@@ -1246,6 +1273,12 @@ static void __declspec(naked) HookMenuInj() {
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
+        call ComposeLabelK
+        mov ecx, offset g_labelK
+        mov eax, ACTION_SKINSEL
+        xor esi, esi
+        mov edx, g_fnAddItem
+        call edx
         push 4
         call ComposeLabelS
         add esp, 4
@@ -1267,12 +1300,6 @@ static void __declspec(naked) HookMenuInj() {
         add esp, 4
         mov ecx, offset g_labelS + 960
         mov eax, ACTION_INFINITE
-        xor esi, esi
-        mov edx, g_fnAddItem
-        call edx
-        call ComposeLabelM
-        mov ecx, offset g_labelM
-        mov eax, ACTION_MISSIONS
         xor esi, esi
         mov edx, g_fnAddItem
         call edx
@@ -1331,8 +1358,14 @@ static void __declspec(naked) HookDispatch() {
         ret
     trysel:
         cmp edi, ACTION_BOSSSEL
-        jne trymon
+        jne tryskin
         call CycleBoss
+        push g_retHandled
+        ret
+    tryskin:
+        cmp edi, ACTION_SKINSEL
+        jne trymon
+        call CycleSkin
         push g_retHandled
         ret
     trymon:
@@ -1353,17 +1386,11 @@ static void __declspec(naked) HookDispatch() {
         ret
     tryinf:
         cmp edi, ACTION_INFINITE
-        jne trymis
+        jne back
         push 6
         call StartChallenge
         add esp, 4
         push g_retMissionGo
-        ret
-    trymis:
-        cmp edi, ACTION_MISSIONS
-        jne back
-        call ToggleMissions
-        push g_retHandled
         ret
     back:
         push g_retDispatch
@@ -1619,8 +1646,7 @@ static DWORD WINAPI Worker(LPVOID) {
     g_fnFlagGet  = RVA(FN_FLAG_GET);
     g_flagMgrPtr = RVA(G_FLAG_MGR);
     g_powers = GetPrivateProfileIntA("Powers", "all", 0, INI_FILE) ? 1 : 0;
-    g_missions = GetPrivateProfileIntA("Missions", "all", 0, INI_FILE) ? 1 : 0;
-    ApplyMissions();
+    // (mission-unlock row removed per user request)
     DiTrace("WORKER base=%08X powers=%d\n", g_exeBase, g_powers);
     // Expected-byte patterns carry absolute VAs that the loader rebases
     // (the disp32 fields), so they are built at runtime from g_exeBase.

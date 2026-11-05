@@ -30,7 +30,7 @@ SOLDIER_BLOCK = '''{{ CSoldier "{name}"
 \t0,{x},{y},{z}    // location
 \t0,0,{o}    // orient
 \t0    // enabled
-\t""    // group
+\t"{grp}"    // group
 \t0    // selfIlluminated
 \t0    // attachCount
 \t250    // hitPoints
@@ -96,7 +96,7 @@ GUN_BLOCK = '''{{ CGun "{name}"
 \t0,{x},{y},{z}    // location
 \t0,0,0    // orient
 \t{en}    // enabled
-\t""    // group
+\t"{grp}"    // group
 \t0    // selfIlluminated
 \t0    // attachCount
 \t"{model}"    // modelName
@@ -184,23 +184,23 @@ def build_msn():
         n, g = "SoldierS%d" % i, "GunS%d" % i
         decls += ['CSoldier "%s"' % n, 'CGun "%s"' % g]
         blocks.append(SOLDIER_BLOCK.format(name=n, x="%.3f"%x, y=y, z="%.3f"%z, o=0,
-                                           gun=g, model="SOLDIER.DFM"))
+                                           grp="GS%d" % i, gun=g, model="SOLDIER.DFM"))
         blocks.append(GUN_BLOCK.format(name=g, x="%.3f"%x, y=y, z="%.3f"%z, en=0,
-                                       carry=n, model="MP34.SMF", **GUNS["MP34.SMF"]))
+                                       grp="GS%d" % i, carry=n, model="MP34.SMF", **GUNS["MP34.SMF"]))
     for i in range(1, N_ELITE + 1):
         x, y, z = wps[(i * 3) % len(wps)]
         n, g = "EliteS%d" % i, "GunE%d" % i
         decls += ['CSoldier "%s"' % n, 'CGun "%s"' % g]
         blocks.append(SOLDIER_BLOCK.format(name=n, x="%.3f"%x, y=y, z="%.3f"%z, o=0,
-                                           gun=g, model="GGG_ELITE.DFM"))
+                                           grp="GE%d" % i, gun=g, model="GGG_ELITE.DFM"))
         blocks.append(GUN_BLOCK.format(name=g, x="%.3f"%x, y=y, z="%.3f"%z, en=0,
-                                       carry=n, model="MG42.SMF", **GUNS["MG42.SMF"]))
+                                       grp="GE%d" % i, carry=n, model="MG42.SMF", **GUNS["MG42.SMF"]))
     floor = [("GunFloor1","MG42.SMF",245,0,340), ("GunFloor2","MG42.SMF",255,0,350),
              ("GunFloor3","FALLSHIRMG42.SMF",250,0,360), ("GunFloor4","GREASEGUN.SMF",240,0,355)]
     for n, mod, x, y, z in floor:
         decls.append('CGun "%s"' % n)
         blocks.append(GUN_BLOCK.format(name=n, x=x, y=y, z=z, en=1,
-                                       carry="(none)", model=mod, **GUNS[mod]))
+                                       grp="", carry="(none)", model=mod, **GUNS[mod]))
     out = ["// mission version, actor version", "8,4",
            "// Root name of mission", "challenge",
            "// setList", "1", "BOILERROOM.PST",

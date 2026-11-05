@@ -15,9 +15,13 @@ Nine extra rows appear in **New Game** before *Training*:
   shown in the menu labels.
 - **Boss Battle** — officers + sub-officers plus a boss (NAZI_BARROCK,
   1200 HP) over 6 waves. Separate record: `[Challenge] BestBoss`.
-- **Boss: <name>** — appearance cycler for the Boss Battle boss. Cycles
+- **Jefe: <name>** — appearance cycler for the Boss Battle boss. Cycles
   `Barrock / Mynce / Butcheress / Rayne / RayneLA / NAZI_BARROCK.DFM /
   BUTCHERESS.DFM` and persists the choice to `[Appearance] Boss`.
+- **Apariencia: <name>** — player-skin cycler. Rewrites the `heroType`
+  of the mission's `CHeroPlaceholder` (1=Rayne, 2=Mynce, 3=Butcheress,
+  4=Rayne act 1) so you *play* as the chosen character in every arena.
+  Persists to `[Appearance] Skin`.
 - **Monster Mash** — a monster arena over 6 waves: swamp packs
   (CMaraisreq), church mutates (CMutate) and the Act-1 Queen (CQueen)
   as the final boss. Separate record: `[Challenge] BestMonster`.
@@ -27,9 +31,6 @@ Nine extra rows appear in **New Game** before *Training*:
 - **Endless Horde** — never-ending soldier waves that keep ramping up
   (bigger squads, more elites). The record is waves survived:
   `[Challenge] BestWaves`; HUD shows `OLEADA n` (no total).
-- **Unlock all missions** — forces the progression byte the level
-  selector checks (`>=3` = all acts visible) and restores the original
-  value when toggled off. Persisted in `[Missions] all`.
 
 Native HUD feedback during fights: `OLEADA n/N` per wave and
 `COMPLETADO! m:ss` on completion via the game's own message renderer
@@ -58,8 +59,16 @@ launch time (file-level, before the engine loads it):
     block; NPC models (`BUTCHERESS`, `KRISTINE`, `KAZI`, `GMONEY`, `HICKS`,
     `OLDMAN`, `BATMITE`, `RAYNE`, `VAMPETTE`, `VAMP`) automatically turn
     Boss1 into a `CNPC` actor (restored to `CSoldier` when removed).
+- `Skin=` — player model via `heroType`: `Rayne`/`Mynce`/`Butcheress`/
+  `RayneLA` (the *Apariencia* menu row edits this). Applies to all four
+  arenas.
 
 Leave the keys unset/commented for stock models.
+
+> Wave spawning uses the native reinforcement path: dormant actors
+> (`enabled=0`, `spawnType=1`) carry a `group` name and are materialized
+> with `createActorGroup(group)`; `setvictim(actor,MainCharacter0)`
+> makes them hostile. Soldier+gun pairs share one group.
 
 > Mynce appears twice in the campaign: the maroon mentor outfit (Act 1
 > intro, `LA_*`) and the G.G.G. officer look (Act 3, `DE_C3DOME`). Both

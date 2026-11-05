@@ -359,7 +359,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS1"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -424,7 +424,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS1"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -445,7 +445,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS2"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -510,7 +510,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS2"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -531,7 +531,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS3"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -596,7 +596,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS3"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -617,7 +617,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS4"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -682,7 +682,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS4"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -703,7 +703,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS5"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -768,7 +768,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS5"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -789,7 +789,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS6"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -854,7 +854,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS6"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -875,7 +875,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS7"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -940,7 +940,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS7"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -961,7 +961,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS8"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1026,7 +1026,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS8"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1047,7 +1047,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS9"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1112,7 +1112,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS9"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1133,7 +1133,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS10"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1198,7 +1198,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS10"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1219,7 +1219,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS11"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1284,7 +1284,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS11"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1305,7 +1305,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS12"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1370,7 +1370,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS12"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1391,7 +1391,7 @@ CGun "GunFloor4"
 	0,258.000,0.0,353.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS13"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1456,7 +1456,7 @@ CGun "GunFloor4"
 	0,258.000,0.0,353.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS13"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1477,7 +1477,7 @@ CGun "GunFloor4"
 	0,242.000,0.0,337.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS14"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1542,7 +1542,7 @@ CGun "GunFloor4"
 	0,242.000,0.0,337.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS14"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1563,7 +1563,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS15"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1628,7 +1628,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS15"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1649,7 +1649,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS16"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1714,7 +1714,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS16"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1735,7 +1735,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS17"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1800,7 +1800,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS17"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1821,7 +1821,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS18"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1886,7 +1886,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS18"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1907,7 +1907,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS19"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -1972,7 +1972,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS19"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -1993,7 +1993,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS20"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2058,7 +2058,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS20"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2079,7 +2079,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS21"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2144,7 +2144,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS21"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2165,7 +2165,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS22"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2230,7 +2230,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS22"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2251,7 +2251,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS23"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2316,7 +2316,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS23"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2337,7 +2337,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS24"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2402,7 +2402,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS24"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2423,7 +2423,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS25"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2488,7 +2488,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS25"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2509,7 +2509,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS26"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2574,7 +2574,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS26"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2595,7 +2595,7 @@ CGun "GunFloor4"
 	0,258.000,0.0,353.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS27"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2660,7 +2660,7 @@ CGun "GunFloor4"
 	0,258.000,0.0,353.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS27"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2681,7 +2681,7 @@ CGun "GunFloor4"
 	0,242.000,0.0,337.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS28"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2746,7 +2746,7 @@ CGun "GunFloor4"
 	0,242.000,0.0,337.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS28"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2767,7 +2767,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS29"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2832,7 +2832,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,377.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS29"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2853,7 +2853,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS30"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -2918,7 +2918,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS30"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -2939,7 +2939,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS31"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3004,7 +3004,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS31"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3025,7 +3025,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS32"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3090,7 +3090,7 @@ CGun "GunFloor4"
 	0,282.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS32"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3111,7 +3111,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS33"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3176,7 +3176,7 @@ CGun "GunFloor4"
 	0,277.713,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS33"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3197,7 +3197,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS34"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3262,7 +3262,7 @@ CGun "GunFloor4"
 	0,266.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS34"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3283,7 +3283,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS35"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3348,7 +3348,7 @@ CGun "GunFloor4"
 	0,250.000,0.0,313.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS35"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3369,7 +3369,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS36"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3434,7 +3434,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS36"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3455,7 +3455,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS37"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3520,7 +3520,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,329.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS37"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3541,7 +3541,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS38"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3606,7 +3606,7 @@ CGun "GunFloor4"
 	0,218.000,0.0,345.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS38"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3627,7 +3627,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS39"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3692,7 +3692,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS39"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3713,7 +3713,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS40"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -3778,7 +3778,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,372.713    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GS40"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"WALTHER.SMF"    // modelName
@@ -3851,7 +3851,7 @@ CGun "GunFloor4"
 	-1    // largestPatrolPointIndex
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
-	2    // spawnType
+	1    // spawnType
 	"NAZI_BARROCK.DFM"    // modelName
 	{ // motion state
 		"standambient",0 // current motion name, curFrameNumber
@@ -4052,7 +4052,7 @@ CGun "GunFloor4"
 	-1    // largestPatrolPointIndex
 	-1    // currentPatrolPointIndex
 	"(none)"		// nextPatrolPoint
-	2    // spawnType
+	1    // spawnType
 	0.916199    // speed
 	"Queen.dfm"    // modelName
 	{ // motion state
@@ -4075,7 +4075,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GE7"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	250    // hitPoints
@@ -4140,7 +4140,7 @@ CGun "GunFloor4"
 	0,234.000,0.0,317.287    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GE7"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"MG42.SMF"    // modelName
@@ -4162,7 +4162,7 @@ CGun "GunFloor4"
 	0,222.287,0.0,361.000    // location
 	0,0,0    // orient
 	0    // enabled
-	""    // group
+	"GB1"    // group
 	0    // selfIlluminated
 	0    // attachCount
 	"MG42.SMF"    // modelName

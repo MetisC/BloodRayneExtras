@@ -22,7 +22,7 @@ def prep(b, cls, old, new, loc, group, hp=None, hero=None):
     b = re.sub(r'\n\t[^\n]*    // location', '\n\t%s    // location' % loc, b, count=1)
     b = re.sub(r'(\n\t)"[^"]*"(    // group)', r'\g<1>"%s"\g<2>' % group, b, count=1)
     b = re.sub(r'(\n\t)\d+(    // enabled)', r'\g<1>0\g<2>', b, count=1)
-    b = re.sub(r'(\n\t)\d+(    // spawnType)', r'\g<1>2\g<2>', b)
+    b = re.sub(r'(\n\t)\d+(    // spawnType)', r'\g<1>1\g<2>', b)
     if hp is not None:
         b = re.sub(r'(\n\t)\d+(\.0)?(    // hitPoints)', r'\g<1>%d\g<3>' % hp, b)
         b = re.sub(r'(\n\t)\d+(\.0)?(    // maxHitPoints)', r'\g<1>%d\g<3>' % hp, b)
