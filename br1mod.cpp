@@ -101,7 +101,7 @@ static char  g_labelK[160];
 static BYTE  g_progOrig = 0xFF;
 static int   g_challenge = 0;  // 0 off, 1 armed (menu picked), 2 running in-level
 static int   g_diff = 0;       // 0 Normal, 1 Hard, 2 Extreme
-static int   g_mode = 0;       // 0 Challenge Combat, 1 Boss Battle
+static int   g_mode = 0;       // 0 Challenge, 2 Monster Mash, 3 Boss Rush
 static void  DiTrace(const char* fmt, ...);
 static int   g_autokill = 0;   // ini [Challenge] Autokill — test-only wave bleed
 
@@ -308,7 +308,8 @@ static void ApplyAppearance() {
     if (!f) { DiTrace("APPEAR open fail %s\n", msn); return; }
     fseek(f, 0, SEEK_END); long sz = ftell(f); fseek(f, 0, SEEK_SET);
     char* txt = (char*)malloc(sz + 0x8000);
-    fread(txt, 1, sz, f); fclose(f);
+    if (fread(txt, 1, sz, f) != (size_t)sz) { fclose(f); free(txt); return; }
+    fclose(f);
     txt[sz] = 0;
 
     if (g_mode != 0) { *sold = *eli = 0; }
@@ -734,6 +735,17 @@ static void RecordTime(DWORD ms) {
             g_mode, g_diff, ms / 1000.0, best / 1000.0);
 }
 
+// heroGlobA points at the "MainCharacter0" record from mission load, but
+// its vitals only get populated once the CHeroPlaceholder instantiates
+// the actor — record+0x64 is the HP (nonzero in play, 0 before spawn).
+static int HeroSpawned() {
+    DWORD a = *(DWORD*)g_heroGlobA;
+    DWORD hp = 0;
+    if (a) { __try { hp = *(DWORD*)(a + 0x64); }
+             __except (EXCEPTION_EXECUTE_HANDLER) { hp = 0; } }
+    return hp != 0;
+}
+
 // Runs once per idle fetch (~once per frame) while the challenge is active.
 // The wave state machine never counts deaths while the spawn queue is still
 // draining — that race is what made earlier builds flood the arena.
@@ -746,8 +758,12 @@ static void WaveTick() {
     if (_strnicmp((char*)g_missionName, want, strlen(want))) {
         g_challenge = 0;
         g_qHead = g_qTail = 0;
+        // Restore repointed idle slots only while their script may still
+        // be live — the arena script is freed on unload, and a wild write
+        // into it must never take the process down.
         for (int i = 0; i < 12; ++i) if (g_mbox[i].entry) {
-            *(char**)(g_mbox[i].entry + 4) = g_mbox[i].orig;
+            __try { *(char**)(g_mbox[i].entry + 4) = g_mbox[i].orig; }
+            __except (EXCEPTION_EXECUTE_HANDLER) {}
             g_mbox[i].entry = NULL;
         }
         return;
@@ -782,17 +798,9 @@ static void WaveTick() {
     }
     switch (g_wstate) {
     case 0:                                   // arm: hero warp + wave 1
-        // Wait for the hero to actually spawn. heroGlobA points at the
-        // "MainCharacter0" record from mission load, but its vitals only get
-        // populated once the CHeroPlaceholder instantiates the actor —
-        // record+0x64 is 100 (HP) in play and 0 before. Require nonzero.
-        {
-            DWORD a = *(DWORD*)g_heroGlobA;
-            DWORD hp = 0;
-            if (a) { __try { hp = *(DWORD*)(a + 0x64); }
-                     __except (EXCEPTION_EXECUTE_HANDLER) { hp = 0; } }
-            if (!hp) return;
-        }
+        // Wait for the hero to actually spawn — record+0x64 is 0 until
+        // the CHeroPlaceholder instantiates the actor.
+        if (!HeroSpawned()) return;
         QPush("warpTo(MainCharacter0,WPHero)");
         g_soldierRot = g_eliteRot = g_wpRot = 0;
         g_wave = 1;
@@ -1012,15 +1020,17 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     }
 
     // --- challenge: arm on the first real-run slot-0 after the menu pick ---
-    // Also re-arm whenever an armed arena's mission reloads — "Continuar"
-    // after completion or death restarts the same MSN (slot 0 sits
-    // outside the generated script's mainloop, so it only fires once per
-    // load; actors come back dormant) — that turns Continue into "play it
-    // again". If the slot-0 belongs to a different mission instead
-    // (player went back to the menu and started a campaign act), drop
-    // the stale challenge state.
+    // Re-arm whenever an armed arena's mission reloads — "Continuar"
+    // after completion or death restarts the same MSN (the script's
+    // slot 0 runs again while the hero is still uninstantiated, so
+    // !HeroSpawned() tells a fresh load apart from any later slot-0
+    // inside the same run) — that turns Continue into "play it again".
+    // A slot-0 belonging to a different mission instead (player went
+    // back to the menu and started a campaign act) drops the stale
+    // challenge state.
     if (idx == 0 && mode == 0 && !again) {
-        if (g_challenge) {
+        if (g_challenge == 1 ||
+            (g_challenge == 2 && !HeroSpawned())) {
             const char* want = g_mode == 2 ? MSN_MONSTER
                              : g_mode == 3 ? MSN_BOSSRUSH : MSN_CHALLENGE;
             if (_strnicmp((char*)g_missionName, want, strlen(want))) {
@@ -1301,6 +1311,8 @@ static HRESULT WINAPI HookCreateDevice(IUnknown* di, REFGUID g, LPVOID* out, LPU
     if (SUCCEEDED(hr) && out && *out &&
         !memcmp(&g, &GUID_SysKeyboard_local, sizeof(GUID))) {
         DWORD** dev = (DWORD**)*out;
+        if (*dev == (DWORD*)g_kbDevVtblNew) return hr;   // already ours —
+        // re-copying would chain g_realGetState back into this hook
         DWORD* oldv = *dev;
         memcpy(g_kbDevVtblNew, oldv, sizeof(g_kbDevVtblNew));
         g_realGetState = (GetDevState_t)g_kbDevVtblNew[9];
@@ -1315,6 +1327,10 @@ static void* g_diVtblNew[32];
 static void PatchDirectInput8(LPVOID* ppv) {
     if (!ppv || !*ppv) return;
     DWORD** ifc = (DWORD**)*ppv;
+    // The vtable is shared per class: a second DirectInput8Create call
+    // hands us the same already-swapped table — re-copying would point
+    // g_realCreateDevice at our own hook and recurse forever.
+    if (*ifc == (DWORD*)g_diVtblNew) return;
     DWORD* oldv = *ifc;
     memcpy(g_diVtblNew, oldv, sizeof(g_diVtblNew));
     g_realCreateDevice = (CreateDevice_t)g_diVtblNew[3];
