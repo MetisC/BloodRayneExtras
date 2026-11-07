@@ -104,6 +104,62 @@ static void EnterFight() {
     DrainQueue();
 }
 
+static BYTE photoGame[0x2200], photoView[0x200];
+static int photoDraws, photoPresents;
+static bool expectPhotoCamera;
+static int photoResumeCalls;
+
+static void __fastcall MockPhotoDraw(BYTE* game) {
+    assert(game == photoGame && bool(g_photoRendering) == expectPhotoCamera);
+    assert(PhotoGlobal<DWORD>(MENU_ID) == 0);
+    assert(PhotoField<DWORD>(game, 0x2D8) == (expectPhotoCamera ? 0u : 1u));
+    assert(PhotoField<DWORD>(game, 0x1F88) == 0);
+    assert(PhotoField<float>(game, 0x1F90) == 0);
+    assert(PhotoField<DWORD>(photoView, 4) == (expectPhotoCamera ? 0u : 3u));
+    assert(PhotoField<DWORD>(photoView, 8) == (expectPhotoCamera ? 0u : 2u));
+    assert(PhotoField<DWORD>(photoView, 12) == (expectPhotoCamera ? 0u : 5u));
+    assert(PhotoField<float>(photoView, 0x70) == (expectPhotoCamera ? 24.0f : 10.0f));
+    assert(PhotoField<PhotoVec>(photoView, 0x74).y == (expectPhotoCamera ? 42 : 12));
+    assert(PhotoField<PhotoVec>(photoView, 0x84).x == (expectPhotoCamera ? 0 : 1));
+    ++photoDraws;
+}
+
+static void __cdecl MockPhotoPresent() {
+    assert(!g_photoRendering && PhotoGlobal<DWORD>(MENU_ID) == PAUSE_MENU);
+    assert(PhotoField<DWORD>(photoGame, 0x2D8) == 1);
+    assert(PhotoField<DWORD>(photoGame, 0x1F88) == 123);
+    assert(PhotoField<PhotoVec>(photoView, 0x74).y == 12);
+    assert(PhotoField<PhotoVec>(photoView, 0x84).x == 1);
+    assert(PhotoField<DWORD>(photoView, 4) == 3);
+    assert(PhotoField<DWORD>(photoView, 8) == 2);
+    assert(PhotoField<DWORD>(photoView, 12) == 5);
+    assert(PhotoField<float>(photoView, 0x70) == 10);
+    ++photoPresents;
+}
+
+static void __cdecl MockPhotoMenu(DWORD menu) {
+    assert(menu == 0 && photoResumeCalls++ == 0);
+    PhotoGlobal<DWORD>(MENU_ID) = menu;
+}
+
+static void __fastcall MockPhotoSound(void*, void*, int paused) {
+    assert(paused == 0 && photoResumeCalls++ == 1);
+}
+
+static void __cdecl MockPhotoRumble() {
+    assert(photoResumeCalls++ == 2);
+}
+
+static void MockPhotoCall(DWORD address, DWORD target) {
+    auto* entry = reinterpret_cast<BYTE*>(RVA(address));
+    DWORD oldProtect;
+    assert(VirtualProtect(entry, 6, PAGE_EXECUTE_READWRITE, &oldProtect));
+    entry[0] = 0x68; // push imm32; ret
+    memcpy(entry + 1, &target, 4);
+    entry[5] = 0xC3;
+    FlushInstructionCache(GetCurrentProcess(), entry, 6);
+}
+
 int main() {
     // A private zeroed game image makes ShowHud see a null game object.
     // All actor memory and virtual calls below belong to this test process.
@@ -240,6 +296,41 @@ int main() {
     testNow += RESULT_MS; WaveTick();
     assert(g_challenge == 0 && QEmpty());
     puts("PASS: leaving during result cancels the delayed end event");
+    MockPhotoCall(0x474850, (DWORD)MockPhotoDraw);
+    MockPhotoCall(0x4CEDE0, (DWORD)MockPhotoPresent);
+    PhotoGlobal<BYTE*>(MAIN_VIEW) = photoView;
+    PhotoGlobal<DWORD>(MENU_ID) = PAUSE_MENU;
+    PhotoField<DWORD>(photoGame, 0x2D8) = 1;
+    PhotoField<DWORD>(photoGame, 0x1F88) = 123;
+    PhotoField<float>(photoGame, 0x1F90) = 0.016f;
+    PhotoField<PhotoVec>(photoView, 0x74).y = 12;
+    PhotoField<PhotoVec>(photoView, 0x84).x = 1;
+    PhotoField<DWORD>(photoView, 4) = 3;
+    PhotoField<DWORD>(photoView, 8) = 2;
+    PhotoField<DWORD>(photoView, 12) = 5;
+    PhotoField<float>(photoView, 0x70) = 10.0f;
+    PhotoGlobal<float>(0x5C5BE4) = 24.0f;
+    g_photoPosition.y = 42;
+    expectPhotoCamera = true;
+    RenderPhotoFrame(photoGame, PhotoFrameView::Camera);
+    expectPhotoCamera = false;
+    RenderPhotoFrame(photoGame, PhotoFrameView::Gameplay);
+    assert(photoDraws == 2 && photoPresents == 2);
+    assert(PhotoField<float>(photoGame, 0x1F90) == 0.016f);
+    puts("PASS: clean photo draw restores the original effects, FOV, camera, HUD and pause");
+
+    MockPhotoCall(0x4CAA10, (DWORD)MockPhotoMenu);
+    MockPhotoCall(0x552000, (DWORD)MockPhotoSound);
+    MockPhotoCall(0x508980, (DWORD)MockPhotoRumble);
+    g_photoState = PhotoReturning;
+    g_photoReturnToGame = false;
+    CompletePhotoExit();
+    assert(g_photoState == PhotoOff && PhotoGlobal<DWORD>(MENU_ID) == PAUSE_MENU && !photoResumeCalls);
+    g_photoState = PhotoReturning;
+    g_photoReturnToGame = true;
+    CompletePhotoExit();
+    assert(g_photoState == PhotoOff && PhotoGlobal<DWORD>(MENU_ID) == 0 && photoResumeCalls == 3);
+    puts("PASS: menu entry returns to pause and shortcut entry runs the native resume sequence");
     VirtualFree((void*)g_exeBase, 0, MEM_RELEASE);
     puts("All isolated wave regression tests passed. Game was not launched.");
     return 0;

@@ -88,6 +88,20 @@ Leave the keys unset/commented for stock models.
 > shows the base mentor look.
 > The Countess (Bathory) has no dedicated model in the shipped assets.
 
+## Photo Mode
+
+Choose **Photo Mode** below **Resume** in the pause menu, or press **F12**
+or **L3 + R3** during play. The photo view uses a frozen scene with
+normal vision, no HUD and no full-screen overlays.
+
+- Keyboard and mouse: WASD to move, mouse to look, Space/E to rise,
+  Ctrl/Q to descend and Shift to move faster.
+- Controller: left stick to move, right stick to look, R2/RT to rise
+  and L2/LT to descend. Sony pads using DirectInput can also use R1/L1.
+- Esc, Circle/B or Start returns to Pause when opened from the menu,
+  or resumes play when opened with a shortcut. The original camera
+  and vision effects are restored on both paths.
+
 ## Testing
 
 `tools/test_wave_logic.bat` builds and runs isolated regression tests with

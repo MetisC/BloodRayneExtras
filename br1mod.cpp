@@ -35,6 +35,12 @@
 #include <string.h>
 #include <stdarg.h>
 #include <intrin.h>
+#include <math.h>
+#include <Xinput.h>
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
+#pragma comment(lib, "user32.lib")
 
 // ----------------------------- addresses ----------------------------------
 // rayne1.exe has .reloc + DYNAMIC_BASE and gets ASLR'd (seen loading at
@@ -95,6 +101,7 @@
 #define ACTION_BOSSRUSH 0x167   // Boss Rush arena
 #define ACTION_INFINITE 0x168   // endless horde (record = waves)
 #define ACTION_SKINSEL  0x169   // player-skin cycler (heroType)
+#define ACTION_PHOTO    0x16A   // pause menu free camera
 
 #define INI_FILE       ".\\br1mod.ini"
 #define MSN_CHALLENGE  "challenge.msn"
@@ -1225,6 +1232,8 @@ noinject:
 }
 
 // ------------------------------ hooks -------------------------------------
+#include "photo_mode.inl"
+
 static void __declspec(naked) HookMenuInj() {
     __asm {
         pushad
@@ -1366,6 +1375,12 @@ static void __declspec(naked) HookDispatch() {
         push g_retMissionGo
         ret
     back:
+        cmp edi, ACTION_PHOTO
+        jne native
+        mov g_photoRequested, 1
+        push g_retHandled
+        ret
+    native:
         push g_retDispatch
         ret
     }
@@ -1665,12 +1680,13 @@ static DWORD WINAPI Worker(LPVOID) {
     char expB[6] = { '\x8b', '\xb8', 0,0,0,0 };           // mov edi,[eax+disp32]
     memcpy(expB + 2, &g_itemsOff4, 4);
     PatchChecked(RVA(SITE_MENU_INJ), expA, 7, HookMenuInj);
-    PatchChecked(RVA(SITE_DISPATCH), expB, 6, HookDispatch);
+    const int dispatchReady = PatchChecked(RVA(SITE_DISPATCH), expB, 6, HookDispatch);
     // cmd fetch: mov esi,[ecx+4] (8B 71 04) + mov [ebp-0x3fc],eax
     // (89 85 04 FC FF FF) — no absolute addrs, plain byte check.
     PatchChecked(RVA(SITE_CMD_FETCH), "\x8b\x71\x04\x89\x85\x04\xfc\xff\xff", 9, HookCmdFetch);
     // heroType copy: mov ecx,[edi+0x178] — no absolute addrs, byte check.
     PatchChecked(RVA(SITE_HERO_TYPE), "\x8b\x8f\x78\x01\x00\x00", 6, HookHeroType);
+    if (dispatchReady) InstallPhotoMode();
     return 0;
 }
 
