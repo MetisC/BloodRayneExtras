@@ -26,9 +26,8 @@ static DWORD g_photoOverlayNext, g_photoOverlayDone;
 static DWORD g_photoFadeNext, g_photoNativeFade;
 static DWORD g_photoTintNext, g_photoTintDone, g_photoTintPtr;
 static PhotoVec g_photoPosition, g_photoAngles;
-static DWORD g_photoFrameAt, g_photoPauseAt;
-static DWORD g_photoHero;
-static bool g_photoPauseTracked, g_photoExitArmed, g_photoF12Down, g_photoReturnToGame;
+static DWORD g_photoFrameAt;
+static bool g_photoExitArmed, g_photoF12Down, g_photoReturnToGame;
 static WORD g_photoPadPrevious[4];
 static int g_photoPadSlot;
 static float g_photoTimeScale[4];
@@ -214,15 +213,11 @@ static void BeginPhoto(BYTE* game, DWORD now, int padSlot) {
     g_photoExitArmed = false;
     g_photoReturnToGame = PhotoGlobal<DWORD>(MENU_ID) == 0;
     memcpy(g_photoTimeScale, game + 0x1F9C, sizeof(g_photoTimeScale));
-    if (!g_photoPauseTracked) {
-        g_photoPauseTracked = true;
-        g_photoPauseAt = now;
-        g_photoHero = PhotoGlobal<DWORD>(G_HERO_A);
-    }
     g_photoState = PhotoActive;
     PhotoGlobal<LONG>(MOUSE_X) = PhotoGlobal<LONG>(MOUSE_Y) = 0;
 
     if (g_photoReturnToGame) {
+        UpdateChallengePause(now, true, PhotoGlobal<DWORD>(G_HERO_A));
         // Native pause path from CGame::CheckPause (0x475388).
         PhotoField<DWORD>(game, 0x2C0) = 0;
         typedef void (__thiscall *PauseSound)(void*, int);
@@ -247,17 +242,10 @@ static void CompletePhotoExit() {
 }
 
 static int __cdecl PhotoFrame(BYTE* game) {
-    if (!g_photoReady) return 0;
     const DWORD menu = PhotoGlobal<DWORD>(MENU_ID);
     const DWORD now = GetTickCount();
-    if (g_photoPauseTracked && (menu == 0 || PhotoGlobal<DWORD>(G_HERO_A) != g_photoHero)) {
-        if (menu == 0 && PhotoGlobal<DWORD>(G_HERO_A) == g_photoHero
-                && g_challenge == 2 && g_wstate != 0) {
-            g_t0 += now - g_photoPauseAt;
-            g_stateSince += now - g_photoPauseAt;
-        }
-        g_photoPauseTracked = false;
-    }
+    UpdateChallengePause(now, menu != 0, PhotoGlobal<DWORD>(G_HERO_A));
+    if (!g_photoReady) return 0;
     if (g_photoState != PhotoOff)
         memcpy(game + 0x1F9C, g_photoTimeScale, sizeof(g_photoTimeScale));
     if (PhotoGlobal<DWORD>(0x1FBB2A0) || (g_photoState != PhotoOff && menu != PAUSE_MENU)) {
@@ -445,11 +433,14 @@ static void InstallPhotoMode() {
     memcpy(menu + 2, &g_photoGamePtr, 4);
     memcpy(overlay + 2, &g_photoMenuPtr, 4);
     memcpy(tint + 2, &g_photoTintPtr, 4);
-    g_photoReady =
+    // The common frame hook also keeps arena timing independent of the
+    // optional photo render patches.
+    const int frameReady = PatchChecked(RVA(0x477690),
+        "\x8b\xce\xe8\x09\xc3\xff\xff", 7, HookPhotoFrame);
+    g_photoReady = frameReady &&
         PatchChecked(RVA(0x4C920A), menu, sizeof(menu), HookPhotoMenu) &&
         PatchChecked(RVA(0x474AA3), overlay, sizeof(overlay), HookPhotoOverlay) &&
         PatchChecked(RVA(0x474FCD), "\x8b\xce\xe8\x5c\xcb\xff\xff", 7, HookPhotoFade) &&
-        PatchChecked(RVA(0x51D01C), tint, sizeof(tint), HookPhotoTint) &&
-        PatchChecked(RVA(0x477690), "\x8b\xce\xe8\x09\xc3\xff\xff", 7, HookPhotoFrame);
+        PatchChecked(RVA(0x51D01C), tint, sizeof(tint), HookPhotoTint);
 }
 } // namespace

@@ -57,6 +57,7 @@
 #define RET_DISPATCH   0x4CCD4C
 #define RET_HANDLED    0x4CE0C6   // case-0 handler (rebuild + epilogue)
 #define RET_MISSION_GO 0x4CD018   // push 3; callMenu; reset selection; epilogue
+#define RET_MISSION_EXIT 0x4CCE45 // native game-over Quit epilogue (returns 6)
 #define G_MISSION_NAME 0x1D27A00  // char[32] last queued mission name
 #define G_PROG_BYTE    0x62E8C9   // campaign progression, gates Act rows
 #define G_ITEMS_OFF4   0x1D2006C  // item array base +4 (action field)
@@ -93,6 +94,7 @@
 #define ACT_ENABLED       0xD4
 #define ACT_ENABLED_MAGIC 0x78A123
 
+#define ACTION_CONTINUE 0x17    // game-over Continue, also used by pause Restart
 #define ACTION_POWERS   0x160   // >=0x15d: outside native action range (<=0x15c)
 #define ACTION_CH_N     0x161   // Challenge Combat: Normal
 #define ACTION_CH_H     0x162   // Challenge Combat: Hard
@@ -125,7 +127,7 @@ static int   g_autokill = 0;   // ini [Challenge] Autokill — test-only wave bl
 // Rebased values the naked hooks read as memory operands.
 static DWORD g_fnLocalize, g_fnAddItem, g_progByte, g_itemsOff4;
 static DWORD g_retMenuInj, g_retDispatch, g_retHandled, g_retCmdFetch, g_retCmdFetchReplay;
-static DWORD g_retMissionGo, g_missionName, g_fnFindActor, g_actorMgrPtr;
+static DWORD g_retMissionGo, g_retMissionExit, g_missionName, g_fnFindActor, g_actorMgrPtr;
 static DWORD g_fnRespawnMotion, g_retHeroType;
 static DWORD g_htVal;             // SkinHeroType() result for the spawn hook
 static int   g_skinPending;       // hero spawned with our skin — restore +0x9a0 to 1
@@ -581,7 +583,9 @@ static int WaveElites(int w) {
 static char g_spawned[SP_MAX][32];
 static int  g_nSpawned;
 static int  g_wave;
-static int  g_wstate;      // 0 idle, 1 spawning, 2 settle, 3 fight, 4 done/error, 5 gap, 6 result
+static constexpr int WAVE_COMPLETED = 7;
+static int  g_wstate;      // 0 idle, 1 spawning, 2 settle, 3 fight, 4 error, 5 gap, 6 result, 7 completed
+static DWORD g_completedHero;
 static int  g_seenActors;  // includes corpses killed before the spawn queue drained
 static int  g_lastAlive;
 static DWORD g_stateSince;
@@ -593,6 +597,31 @@ static DWORD g_t0;
 static int  g_soldierRot, g_eliteRot, g_wpRot;
 static int  g_dbgAlive;   // bounded actor-read fault logging
 static int  g_dbgInj;     // bounded debug logging for mailbox injections
+
+// Pause, its submenus and Photo Mode all keep the native menu open.
+// Move both time origins once when the arena resumes.
+static DWORD g_challengePauseHero, g_challengePauseAt, g_challengePauseRun;
+
+static void UpdateChallengePause(DWORD now, bool paused, DWORD hero) {
+    if (g_challenge != 2 || g_wstate == 0 || !hero) {
+        g_challengePauseHero = 0;
+        return;
+    }
+    if (g_challengePauseHero != hero || g_challengePauseRun != g_t0)
+        g_challengePauseHero = 0;
+    if (paused) {
+        if (!g_challengePauseHero) {
+            g_challengePauseHero = hero;
+            g_challengePauseAt = now;
+            g_challengePauseRun = g_t0;
+        }
+    } else if (g_challengePauseHero) {
+        const DWORD duration = now - g_challengePauseAt;
+        g_t0 += duration;
+        g_stateSince += duration;
+        g_challengePauseHero = 0;
+    }
+}
 
 // Actor manager lookup (thiscall on [0x62ED00]): record or NULL.
 static DWORD FindActor(const char* name) {
@@ -897,6 +926,7 @@ static void WaveTick() {
         QueueWave(1);
         g_wstate = 1;
         g_t0 = GetTickCount();
+        g_challengePauseHero = 0;
         return;
     case 1:                                   // spawning: wait queue drain
         if (QEmpty()) { g_wstate = 2; g_stateSince = now; }
@@ -1016,7 +1046,8 @@ static void WaveTick() {
         // Our queue commands bypass NeuterCmd (which suppresses raise).
         // Keep the challenge armed until the command executes via mailbox.
         QPush("raise(gameOver)");
-        g_wstate = 4;
+        g_completedHero = *(DWORD*)g_heroGlobA;
+        g_wstate = WAVE_COMPLETED;
         DiTrace("CHAL ending mode=%d diff=%d t=%u\n", g_mode, g_diff, now);
         return;
     }
@@ -1141,11 +1172,9 @@ static int __cdecl ProcessCommand(int idx, BYTE* entry) {
     }
 
     // --- challenge: arm on the first real-run slot-0 after the menu pick ---
-    // Re-arm whenever an armed arena's mission reloads — "Continuar"
-    // after completion or death restarts the same MSN (the script's
-    // slot 0 runs again while the hero is still uninstantiated, so
-    // !HeroSpawned() tells a fresh load apart from any later slot-0
-    // inside the same run) — that turns Continue into "play it again".
+    // Re-arm when an armed arena reloads after death or a manual restart.
+    // When slot 0 runs before the hero spawns, !HeroSpawned() distinguishes
+    // the fresh load from a later slot 0 inside the same run.
     // A slot-0 belonging to a different mission instead (player went
     // back to the menu and started a campaign act) drops the stale
     // challenge state.
@@ -1233,6 +1262,21 @@ noinject:
 
 // ------------------------------ hooks -------------------------------------
 #include "photo_mode.inl"
+
+static constexpr DWORD GAME_OVER_MENU = 0x14;
+
+static int __cdecl LeaveCompletedChallenge() {
+    if (g_challenge != 2 || g_wstate != WAVE_COMPLETED ||
+        PhotoGlobal<DWORD>(MENU_ID) != GAME_OVER_MENU ||
+        !g_completedHero || *(DWORD*)g_heroGlobA != g_completedHero)
+        return 0;
+
+    // Continue normally reloads a campaign checkpoint. The arena has already
+    // saved its result, so use the native Quit path to unload it.
+    g_challenge = 0;
+    g_qHead = g_qTail = 0;
+    return 1;
+}
 
 static void __declspec(naked) HookMenuInj() {
     __asm {
@@ -1376,9 +1420,19 @@ static void __declspec(naked) HookDispatch() {
         ret
     back:
         cmp edi, ACTION_PHOTO
-        jne native
+        jne trycontinue
         mov g_photoRequested, 1
         push g_retHandled
+        ret
+    trycontinue:
+        cmp edi, ACTION_CONTINUE
+        jne native
+        pushad
+        call LeaveCompletedChallenge
+        test eax, eax
+        popad
+        jz native
+        push g_retMissionExit
         ret
     native:
         push g_retDispatch
@@ -1657,6 +1711,7 @@ static DWORD WINAPI Worker(LPVOID) {
     g_retDispatch= RVA(RET_DISPATCH);
     g_retHandled = RVA(RET_HANDLED);
     g_retMissionGo = RVA(RET_MISSION_GO);
+    g_retMissionExit = RVA(RET_MISSION_EXIT);
     g_missionName = RVA(G_MISSION_NAME);
     g_fnFindActor = RVA(FN_FIND_ACTOR);
     g_actorMgrPtr = RVA(G_ACTOR_MGR);

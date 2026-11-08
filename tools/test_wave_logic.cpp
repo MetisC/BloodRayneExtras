@@ -8,11 +8,13 @@
 static DWORD testNow;
 static int recordWrites;
 static char recordKey[32];
+static DWORD recordValue;
 static DWORD WINAPI TestClock() { return testNow; }
 static UINT WINAPI TestReadIni(LPCSTR, LPCSTR, INT def, LPCSTR) { return def; }
-static BOOL WINAPI TestWriteIni(LPCSTR, LPCSTR key, LPCSTR, LPCSTR) {
+static BOOL WINAPI TestWriteIni(LPCSTR, LPCSTR key, LPCSTR value, LPCSTR) {
     ++recordWrites;
     strcpy(recordKey, key);
+    recordValue = value ? strtoul(value, NULL, 10) : 0;
     return TRUE;
 }
 #define GetTickCount TestClock
@@ -33,6 +35,19 @@ static DWORD hero[0x100 / 4];
 static DWORD heroPtr = (DWORD)hero;
 static char mission[32];
 static int scriptMode;
+
+static int __cdecl MockContinue() { return 4; }
+static int __cdecl MockMissionExit() { return 6; }
+
+static int __declspec(naked) DispatchContinue(DWORD action) {
+    __asm {
+        push edi
+        lea eax, [esp + 8]
+        call HookDispatch
+        pop edi
+        ret
+    }
+}
 
 static DWORD __declspec(naked) MockDeathState() {
     __asm { mov eax, [ecx + 0x150]
@@ -68,6 +83,7 @@ static void Reset(int mode = 0, int diff = 0) {
     g_seenActors = 0; g_lastAlive = -1;
     g_t0 = testNow = 10000;
     g_stateSince = 0;
+    g_challengePauseHero = 0;
     recordWrites = 0; recordKey[0] = 0;
     actorCount = respawns = motionResets = 0;
     strcpy(mission, mode == 2 ? MSN_MONSTER
@@ -170,6 +186,9 @@ int main() {
     hero[0x64 / 4] = 100;
     g_missionName = (DWORD)mission;
     g_cmdModePtr = (DWORD)&scriptMode;
+    g_retDispatch = (DWORD)MockContinue;
+    g_retMissionExit = (DWORD)MockMissionExit;
+    g_itemsOff4 = 0;
     mockVtbl[0xD8 / 4] = (DWORD)MockDeathState;
     mockVtbl[0x6C / 4] = (DWORD)MockRespawn;
     g_fnRespawnMotion = (DWORD)MockMotion;
@@ -217,6 +236,9 @@ int main() {
     assert(g_wstate == 3);
     testNow += SPAWN_TIMEOUT_MS; WaveTick();
     assert(g_wstate == 4 && g_wave == 1 && recordWrites == 0);
+    PhotoGlobal<DWORD>(MENU_ID) = GAME_OVER_MENU;
+    assert(DispatchContinue(ACTION_CONTINUE) == 4 && g_challenge == 2);
+    PhotoGlobal<DWORD>(MENU_ID) = 0;
     puts("PASS: missing spawns stop with an error and never award completion");
 
     Reset(); WaveTick(); EnterFight();
@@ -243,7 +265,7 @@ int main() {
                 testNow = finishedAt + RESULT_MS - 1;
                 WaveTick(); assert(g_wstate == 6 && QEmpty());
                 ++testNow; WaveTick();
-                assert(g_wstate == 4 && !QEmpty());
+                assert(g_wstate == WAVE_COMPLETED && !QEmpty());
                 char* ending = QPop();
                 assert(!strcmp(ending, "raise(gameOver)") && QEmpty());
                 assert(IsOurCmd(ending) && NeuterCmd(ending));
@@ -256,6 +278,16 @@ int main() {
                 ProcessCommand(4, (BYTE*)entry);
                 assert(entry[1] == (DWORD)g_idleStr && QEmpty());
                 WaveTick(); assert(QEmpty() && recordWrites == 1);
+                PhotoGlobal<DWORD>(MENU_ID) = PAUSE_MENU;
+                assert(DispatchContinue(ACTION_CONTINUE) == 4 && g_challenge == 2);
+                PhotoGlobal<DWORD>(MENU_ID) = GAME_OVER_MENU;
+                heroPtr = 0;
+                assert(DispatchContinue(ACTION_CONTINUE) == 4 && g_challenge == 2);
+                heroPtr = (DWORD)hero;
+                assert(DispatchContinue(ACTION_CONTINUE) == 6 && !g_challenge);
+                assert(QEmpty() && recordWrites == 1);
+                assert(DispatchContinue(ACTION_CONTINUE) == 4);
+                PhotoGlobal<DWORD>(MENU_ID) = 0;
             } else {
                 assert(g_wstate == 5);
                 testNow += WAVE_GAP_MS;
@@ -331,6 +363,46 @@ int main() {
     CompletePhotoExit();
     assert(g_photoState == PhotoOff && PhotoGlobal<DWORD>(MENU_ID) == 0 && photoResumeCalls == 3);
     puts("PASS: menu entry returns to pause and shortcut entry runs the native resume sequence");
+
+    PhotoGlobal<DWORD>(G_HERO_A) = heroPtr;
+    Reset(); WaveTick(); EnterFight(); KillWave(); WaveTick();
+    assert(g_wstate == 5);
+    testNow += 1000;
+    const DWORD playedBeforePause = testNow - g_t0;
+    PhotoGlobal<DWORD>(MENU_ID) = PAUSE_MENU;
+    PhotoFrame(photoGame);
+    testNow += 7000;
+    PhotoGlobal<DWORD>(MENU_ID) = 0x15; // Options opened from Pause
+    PhotoFrame(photoGame);
+    testNow += 6000;
+    PhotoGlobal<DWORD>(MENU_ID) = PAUSE_MENU;
+    PhotoFrame(photoGame);
+    BeginPhoto(photoGame, testNow, -1);
+    testNow += 9000;
+    CompletePhotoExit();                  // returns to the same pause
+    PhotoFrame(photoGame);
+    testNow += 5000;
+    PhotoGlobal<DWORD>(MENU_ID) = 0;
+    PhotoFrame(photoGame);
+    assert(testNow - g_t0 == playedBeforePause && testNow - g_stateSince == 1000);
+    PhotoFrame(photoGame);                // subsequent frames must not shift again
+    testNow += WAVE_GAP_MS - 1000 - 1;
+    WaveTick(); assert(g_wave == 1 && QEmpty());
+    ++testNow;
+    WaveTick(); assert(g_wave == 2 && g_wstate == 1);
+    puts("PASS: Pause, Options and Photo share one clock and preserve the remaining wave gap");
+
+    Reset(); WaveTick(); EnterFight();
+    testNow += 1250;
+    const DWORD expectedRecord = testNow - g_t0;
+    PhotoGlobal<DWORD>(MENU_ID) = PAUSE_MENU;
+    PhotoFrame(photoGame);
+    testNow += 30000;
+    PhotoGlobal<DWORD>(MENU_ID) = 0;
+    PhotoFrame(photoGame);
+    g_wave = NWAVES(); KillWave(); WaveTick();
+    assert(recordWrites == 1 && recordValue == expectedRecord);
+    puts("PASS: a long pause does not count toward a completed challenge record");
     VirtualFree((void*)g_exeBase, 0, MEM_RELEASE);
     puts("All isolated wave regression tests passed. Game was not launched.");
     return 0;
